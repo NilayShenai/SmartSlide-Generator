@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"command": "cd \"c:\\Users\\Arnav\\Documents\\LangChain projects\\ai_ppt_maker_langchain_web\" && pip install -r requirements.txt",
+			"group": "build",
+			"isBackground": false,
+			"label": "Install Dependencies",
+			"problemMatcher": [],
+			"type": "shell"
+		}
+	]
+}

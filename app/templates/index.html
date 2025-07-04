@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI PowerPoint Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .upload-area {
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            background: rgba(102, 126, 234, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: rgba(118, 75, 162, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .upload-area.dragover {
+            border-color: #764ba2;
+            background: rgba(118, 75, 162, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+            color: #888;
+            font-weight: 500;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #ddd, transparent);
+        }
+
+        .divider span {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0 20px;
+        }
+
+        .input-field, .select-field, .textarea-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .input-field:focus, .select-field:focus, .textarea-field:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .textarea-field {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            border: 2px solid #e1e5e9;
+            background: white;
+        }
+
+        .radio-option:hover {
+            background: rgba(102, 126, 234, 0.05);
+            border-color: #667eea;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 8px;
+            accent-color: #667eea;
+        }
+
+        .radio-option input[type="radio"]:checked + span {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .slider-container {
+            margin-top: 10px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e1e5e9;
+            outline: none;
+            appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-value {
+            text-align: center;
+            margin-top: 8px;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .selected-file {
+            background: rgba(102, 126, 234, 0.1);
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .file-name {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .remove-file {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 5px;
+        }
+
+        .remove-file:hover {
+            color: #e74c3c;
+        }
+
+        .flowchart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .add-flowchart-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .add-flowchart-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .flowchart-item {
+            background: rgba(102, 126, 234, 0.05);
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .flowchart-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+        }
+
+        .flowchart-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .flowchart-number {
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .remove-flowchart-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .remove-flowchart-btn:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+        }
+
+        .flowchart-fields {
+            display: grid;
+            gap: 15px;
+        }
+
+        .flowchart-title-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .flowchart-title-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .flowchart-content-textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            min-height: 100px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: white;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        .flowchart-content-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI PowerPoint Generator</h1>
+            <p>Create stunning presentations in seconds</p>
+            <div id="apiStatus" style="margin-top: 10px; font-size: 0.9rem; color: #666;">
+                <span id="statusIndicator">🔄</span> <span id="statusText">Checking API status...</span>
+            </div>
+        </div>
+
+        <form id="pptForm">
+            <!-- Upload Document Section -->
+            <div class="form-group">
+                <label>Upload Document</label>
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📄</div>
+                    <div class="upload-text">Drag and drop your document here</div>
+                    <div style="color: #999; font-size: 0.9rem;">or click to browse files</div>
+                    <input type="file" class="file-input" id="fileInput" accept=".pdf,.doc,.docx,.txt">
+                </div>
+                <div class="selected-file" id="selectedFile">
+                    <div class="file-info">
+                        <span class="file-name" id="uploadedFileName"></span>
+                        <button type="button" class="remove-file" id="removeFile">✕</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+            <!-- Enter Topic Section -->
+            <div class="form-group">
+                <label for="topic">Enter Topic</label>
+                <textarea class="textarea-field" id="topic" placeholder="Enter your presentation topic or key points..."></textarea>
+            </div>
+
+            <!-- Theme Selection -->
+            <div class="form-group">
+                <label>Theme</label>
+                <div class="radio-group theme-grid">
+                    <label class="radio-option">
+                        <input type="radio" name="theme" value="corporate" checked>
+                        <span>Corporate</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="theme" value="creative">
+                        <span>Creative</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="theme" value="academic">
+                        <span>Academic</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="theme" value="health">
+                        <span>Health</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="theme" value="technology">
+                        <span>Technology</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="theme" value="environment">
+                        <span>Environment</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Tone Selection -->
+            <div class="form-group">
+                <label>Tone</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="tone" value="professional" checked>
+                        <span>Professional</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="tone" value="friendly">
+                        <span>Friendly</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="tone" value="urgent">
+                        <span>Urgent</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="tone" value="academic">
+                        <span>Academic</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="tone" value="casual">
+                        <span>Casual</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="tone" value="inspiring">
+                        <span>Inspiring</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Text Size Selection -->
+            <div class="form-group">
+                <label>Text Size</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="textSize" value="small">
+                        <span>Small</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="textSize" value="medium" checked>
+                        <span>Medium</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="textSize" value="large">
+                        <span>Large</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Audience Input -->
+            <div class="form-group">
+                <label>Target Audience</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="audience" value="general public" checked>
+                        <span>General Public</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="audience" value="technical professionals">
+                        <span>Technical Professionals</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="audience" value="students">
+                        <span>Students</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="audience" value="executives">
+                        <span>Executives</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="audience" value="policymakers">
+                        <span>Policymakers</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="audience" value="researchers">
+                        <span>Researchers</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Number of Slides (conditional) -->
+            <div class="form-group" id="slidesGroup" style="display: none;">
+                <label for="slides">Number of Slides: <span id="slideValue">10</span></label>
+                <div class="slider-container">
+                    <input type="range" class="slider" id="slides" min="3" max="20" value="10">
+                </div>
+            </div>
+
+            <!-- Flowchart Option -->
+            <div class="form-group">
+                <label>Add Flowchart?</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="flowchart" value="no" checked>
+                        <span>No</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="flowchart" value="yes">
+                        <span>Yes</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Flowchart Input (conditional) -->
+            <div class="form-group" id="flowchartGroup" style="display: none;">
+                <div class="flowchart-header">
+                    <label>Flowcharts</label>
+                    <button type="button" class="add-flowchart-btn" id="addFlowchartBtn">
+                        <span>+</span> Add Flowchart
+                    </button>
+                </div>
+                
+                <div id="flowchartsContainer">
+                    <!-- Flowcharts will be added here dynamically -->
+                </div>
+            </div>
+
+            <!-- File Format Selection -->
+            <div class="form-group">
+                <label>File Format</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="fileFormat" value="pptx" checked>
+                        <span>PowerPoint (.pptx)</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="fileFormat" value="pdf">
+                        <span>PDF (.pdf)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- File Name Input -->
+            <div class="form-group">
+                <label for="fileName">File Name</label>
+                <input type="text" class="input-field" id="fileName" placeholder="Enter file name (without extension)" value="my-presentation">
+            </div>
+
+            <!-- Generate Button -->
+            <button type="submit" class="generate-btn">
+                🎯 Generate PPT
+            </button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // File upload functionality
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const selectedFile = document.getElementById('selectedFile');
+            const uploadedFileName = document.getElementById('uploadedFileName');
+            const removeFile = document.getElementById('removeFile');
+            const topicInput = document.getElementById('topic');
+            const slidesGroup = document.getElementById('slidesGroup');
+            const flowchartRadios = document.querySelectorAll('input[name="flowchart"]');
+            const flowchartGroup = document.getElementById('flowchartGroup');
+            const addFlowchartBtn = document.getElementById('addFlowchartBtn');
+            const flowchartsContainer = document.getElementById('flowchartsContainer');
+            
+            let flowchartCounter = 0;
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileSelect(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+
+        removeFile.addEventListener('click', () => {
+            fileInput.value = '';
+            selectedFile.style.display = 'none';
+            uploadArea.style.display = 'block';
+        });
+
+        // Show/hide slides slider based on topic input
+        if (topicInput) {
+            topicInput.addEventListener('input', () => {
+                if (topicInput.value && topicInput.value.trim()) {
+                    slidesGroup.style.display = 'block';
+                } else {
+                    slidesGroup.style.display = 'none';
+                }
+            });
+            
+            // Also check on page load in case there's already content
+            if (topicInput.value && topicInput.value.trim()) {
+                slidesGroup.style.display = 'block';
+            }
+        } else {
+            console.error('Topic input element not found!');
+        }
+
+        function handleFileSelect(file) {
+            uploadedFileName.textContent = file.name;
+            selectedFile.style.display = 'block';
+            uploadArea.style.display = 'none';
+        }
+
+        // Slider functionality
+        const slidesSlider = document.getElementById('slides');
+        const slideValue = document.getElementById('slideValue');
+
+        slidesSlider.addEventListener('input', () => {
+            slideValue.textContent = slidesSlider.value;
+        });
+
+        // Flowchart toggle functionality
+        flowchartRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (radio.value === 'yes' && radio.checked) {
+                    flowchartGroup.style.display = 'block';
+                    // Add first flowchart if none exist
+                    if (flowchartsContainer.children.length === 0) {
+                        addFlowchart();
+                    }
+                } else if (radio.value === 'no' && radio.checked) {
+                    flowchartGroup.style.display = 'none';
+                    // Clear all flowcharts
+                    flowchartsContainer.innerHTML = '';
+                    flowchartCounter = 0;
+                }
+            });
+        });
+
+        // Add flowchart functionality
+        addFlowchartBtn.addEventListener('click', addFlowchart);
+
+        function addFlowchart() {
+            flowchartCounter++;
+            const flowchartItem = document.createElement('div');
+            flowchartItem.className = 'flowchart-item';
+            flowchartItem.setAttribute('data-flowchart-id', flowchartCounter);
+            
+            flowchartItem.innerHTML = `
+                <div class="flowchart-item-header">
+                    <div class="flowchart-number">${flowchartCounter}</div>
+                    <button type="button" class="remove-flowchart-btn" onclick="removeFlowchart(${flowchartCounter})">
+                        Remove
+                    </button>
+                </div>
+                <div class="flowchart-fields">
+                    <div>
+                        <label>Slide Title</label>
+                        <input type="text" class="flowchart-title-input" 
+                               placeholder="Enter slide title (e.g., 'Process Flow', 'Workflow Overview')" 
+                               value="Process Flow ${flowchartCounter}">
+                    </div>
+                    <div>
+                        <label>Flowchart Content</label>
+                        <textarea class="flowchart-content-textarea" 
+                                  placeholder="Enter your flowchart in simple format:
+Examples:
+• Simple format: A->B;B->C;C->D
+• Step format: Start->Process->Decision->End
+• With labels: Login->Verify->Success/Failure->Dashboard/Login
+
+Or use full Mermaid syntax:
+flowchart TD
+    A[Start] --> B{Decision}
+    B --> C[Option A]
+    B --> D[Option B]"></textarea>
+                    </div>
+                </div>
+            `;
+            
+            flowchartsContainer.appendChild(flowchartItem);
+        }
+
+        function removeFlowchart(id) {
+            const flowchartItem = document.querySelector(`[data-flowchart-id="${id}"]`);
+            if (flowchartItem) {
+                flowchartItem.remove();
+                updateFlowchartNumbers();
+            }
+        }
+
+        function updateFlowchartNumbers() {
+            const flowchartItems = flowchartsContainer.querySelectorAll('.flowchart-item');
+            flowchartItems.forEach((item, index) => {
+                const numberElement = item.querySelector('.flowchart-number');
+                const titleInput = item.querySelector('.flowchart-title-input');
+                numberElement.textContent = index + 1;
+                
+                // Update default title if it's still the default pattern
+                if (titleInput.value.match(/^Process Flow \d+$/)) {
+                    titleInput.value = `Process Flow ${index + 1}`;
+                }
+            });
+        }
+
+        // Make removeFlowchart function globally accessible
+        window.removeFlowchart = removeFlowchart;
+
+        // Form submission
+        const pptForm = document.getElementById('pptForm');
+        if (pptForm) {
+            pptForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const topic = document.getElementById('topic')?.value?.trim() || '';
+                const fileInput = document.getElementById('fileInput');
+                
+                // Validation
+                if (!fileInput?.files?.length && !topic) {
+                    alert('Please either upload a document or enter a topic.');
+                    return;
+                }
+            
+            // Show loading state
+            const generateBtn = document.querySelector('.generate-btn');
+            const originalText = generateBtn.textContent;
+            generateBtn.textContent = '🔄 Generating PPT...';
+            generateBtn.disabled = true;
+            
+            try {
+                let uploadedFilePath = null;
+                
+                // Step 1: Upload file if provided
+                if (fileInput.files.length > 0) {
+                    const uploadFormData = new FormData();
+                    uploadFormData.append('file', fileInput.files[0]);
+                    
+                    const uploadResponse = await fetch('/api/upload', {
+                        method: 'POST',
+                        body: uploadFormData
+                    });
+                    
+                    if (!uploadResponse.ok) {
+                        const errorData = await uploadResponse.json();
+                        throw new Error(errorData.error || 'File upload failed');
+                    }
+                    
+                    const uploadResult = await uploadResponse.json();
+                    uploadedFilePath = uploadResult.filepath;
+                    
+                    // Update slides slider based on predicted slides
+                    if (uploadResult.predicted_slides) {
+                        document.getElementById('slides').value = uploadResult.predicted_slides;
+                        document.getElementById('slideValue').textContent = uploadResult.predicted_slides;
+                    }
+                }
+                
+                // Step 2: Prepare generation config
+                const slidesElement = document.getElementById('slides');
+                const numSlides = slidesElement && slidesElement.value ? parseInt(slidesElement.value) : 5;
+                
+                const config = {
+                    topic: topic,
+                    num_slides: numSlides,
+                    theme: document.querySelector('input[name="theme"]:checked').value,
+                    tone: document.querySelector('input[name="tone"]:checked').value,
+                    text_size: document.querySelector('input[name="textSize"]:checked').value,
+                    audience: document.querySelector('input[name="audience"]:checked').value,
+                    filename: document.getElementById('fileName').value.trim() || 'my-presentation',
+                    file_format: document.querySelector('input[name="fileFormat"]:checked').value
+                };
+                
+                // Add document file path if uploaded
+                if (uploadedFilePath) {
+                    config.doc_filepath = uploadedFilePath;
+                }
+                
+                // Add flowchart info if enabled
+                const flowchart = document.querySelector('input[name="flowchart"]:checked').value;
+                if (flowchart === 'yes') {
+                    const flowcharts = [];
+                    const flowchartItems = flowchartsContainer.querySelectorAll('.flowchart-item');
+                    
+                    flowchartItems.forEach((item, index) => {
+                        const titleInput = item.querySelector('.flowchart-title-input');
+                        const contentTextarea = item.querySelector('.flowchart-content-textarea');
+                        
+                        const title = titleInput.value.trim() || `Process Flow ${index + 1}`;
+                        const content = contentTextarea.value.trim();
+                        
+                        if (content) {
+                            flowcharts.push({
+                                title: title,
+                                description: content
+                            });
+                        }
+                    });
+                    
+                    if (flowcharts.length > 0) {
+                        config.flowcharts = flowcharts;
+                    }
+                }
+                
+                // Step 3: Start generation
+                const generateResponse = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(config)
+                });
+                
+                if (!generateResponse.ok) {
+                    const errorData = await generateResponse.json();
+                    throw new Error(errorData.error || 'Generation failed');
+                }
+                
+                const generateResult = await generateResponse.json();
+                const jobId = generateResult.job_id;
+                
+                // Step 4: Poll for completion
+                generateBtn.textContent = '⏳ Processing...';
+                
+                const pollInterval = setInterval(async () => {
+                    try {
+                        const statusResponse = await fetch(`/api/status/${jobId}`);
+                        const status = await statusResponse.json();
+                        
+                        if (status.status === 'completed') {
+                            clearInterval(pollInterval);
+                            
+                            // Step 5: Download the file
+                            const downloadResponse = await fetch(`/api/download/${jobId}`);
+                            if (downloadResponse.ok) {
+                                const blob = await downloadResponse.blob();
+                                const url = window.URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.style.display = 'none';
+                                a.href = url;
+                                const fileExtension = config.file_format === 'pdf' ? '.pdf' : '.pptx';
+                                a.download = `${config.filename}${fileExtension}`;
+                                document.body.appendChild(a);
+                                a.click();
+                                window.URL.revokeObjectURL(url);
+                                document.body.removeChild(a);
+                                
+                                generateBtn.textContent = originalText;
+                                generateBtn.disabled = false;
+                                alert('✅ PPT generated successfully and downloaded!');
+                            } else {
+                                throw new Error('Download failed');
+                            }
+                            
+                        } else if (status.status === 'failed') {
+                            clearInterval(pollInterval);
+                            throw new Error(status.error || 'Generation failed');
+                            
+                        } else {
+                            // Update progress
+                            const progress = status.progress || 0;
+                            const statusText = status.status || 'processing';
+                            generateBtn.textContent = `🔄 ${statusText.charAt(0).toUpperCase() + statusText.slice(1).replace('_', ' ')} (${progress}%)`;
+                        }
+                        
+                    } catch (pollError) {
+                        clearInterval(pollInterval);
+                        throw pollError;
+                    }
+                }, 2000); // Poll every 2 seconds
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert(`❌ Error: ${error.message}`);
+                generateBtn.textContent = originalText;
+                generateBtn.disabled = false;
+            }
+            });
+        } else {
+            console.error('PPT form element not found!');
+        }
+
+        // Radio button styling updates
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Update the selected state styling
+                this.closest('.radio-group').querySelectorAll('.radio-option').forEach(option => {
+                    option.style.background = option.querySelector('input').checked ? 
+                        'rgba(102, 126, 234, 0.1)' : 'white';
+                    option.style.borderColor = option.querySelector('input').checked ? 
+                        '#667eea' : '#e1e5e9';
+                });
+            });
+        });
+
+        // Initialize radio button states
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
+                radio.dispatchEvent(new Event('change'));
+            });
+            
+            // Check API status
+            checkApiStatus();
+        });
+        
+        // Check API status
+        async function checkApiStatus() {
+            try {
+                const response = await fetch('/api/health');
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('statusIndicator').textContent = '✅';
+                    document.getElementById('statusText').textContent = 'API Ready';
+                    document.getElementById('apiStatus').style.color = '#4CAF50';
+                    console.log('API Status:', data);
+                } else {
+                    throw new Error(`API responded with status: ${response.status}`);
+                }
+            } catch (error) {
+                console.error('API Health Check Error:', error);
+                document.getElementById('statusIndicator').textContent = '❌';
+                document.getElementById('statusText').textContent = 'API Unavailable';
+                document.getElementById('apiStatus').style.color = '#f44336';
+            }
+        }
+        
+        // Initialize API health check when page loads (with small delay)
+        setTimeout(() => {
+            checkApiStatus();
+        }, 500);
+        
+        }); // End of DOMContentLoaded
+    </script>
+</body>
+</html>
