@@ -178,6 +178,19 @@ except ImportError as e:
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Configure logging for production
+if os.environ.get('DYNO'):  # Running on Heroku
+    import logging
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
+    )
+    
+    # Add memory monitoring
+    import psutil
+    logger.info(f"Memory usage: {psutil.virtual_memory().percent}%")
+    logger.info(f"Available memory: {psutil.virtual_memory().available / 1024 / 1024:.1f} MB")
+
 # Global variables for job tracking
 active_jobs: Dict[str, Dict] = {}
 job_results: Dict[str, Dict] = {}
@@ -360,9 +373,22 @@ Create a {{num_slides}}-slide presentation following the exact format shown. Inc
 def process_presentation_job(job_id: str, config: Dict):
     """Background task to process presentation generation"""
     try:
+        print(f"Starting job processing for job_id: {job_id}")
+        
+        # Ensure job exists in active_jobs
+        if job_id not in active_jobs:
+            print(f"WARNING: Job {job_id} not found in active_jobs at start of processing")
+            active_jobs[job_id] = {
+                'status': 'started',
+                'progress': 0,
+                'created_at': datetime.now().isoformat(),
+                'config': config
+            }
+        
         # Update job status
         active_jobs[job_id]['status'] = 'generating_content'
         active_jobs[job_id]['progress'] = 20
+        print(f"Job {job_id}: Updated status to generating_content")
         
         # Generate content
         logger.info(f"Job {job_id}: Generating AI content")
@@ -553,11 +579,22 @@ def process_presentation_job(job_id: str, config: Dict):
         }
         
         logger.info(f"Job {job_id}: Completed successfully")
+        print(f"Job {job_id}: Moved from active_jobs to job_results")
+        print(f"Active jobs remaining: {list(active_jobs.keys())}")
+        print(f"Completed jobs: {list(job_results.keys())}")
+        
+        # Remove from active jobs
+        if job_id in active_jobs:
+            del active_jobs[job_id]
         
     except Exception as e:
         logger.error(f"Job {job_id} failed: {e}")
-        active_jobs[job_id]['status'] = 'failed'
-        active_jobs[job_id]['error'] = str(e)
+        print(f"Job {job_id} FAILED: {e}")
+        
+        # Ensure job failure is recorded
+        if job_id in active_jobs:
+            active_jobs[job_id]['status'] = 'failed'
+            active_jobs[job_id]['error'] = str(e)
         
         job_results[job_id] = {
             'status': 'failed',

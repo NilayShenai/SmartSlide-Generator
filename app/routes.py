@@ -11,7 +11,8 @@ import uuid
 # Import the API functions from your new utils.py
 from .utils import (
     allowed_file, read_document_content, generate_presentation_content,
-    process_presentation_job, active_jobs, job_results, cleanup_old_files
+    process_presentation_job, active_jobs, job_results, cleanup_old_files,
+    logger
 )
 
 main = Blueprint("main", __name__)
@@ -111,6 +112,7 @@ def generate_presentation():
         
         # Generate unique job ID
         job_id = str(uuid.uuid4())
+        print(f"Generated job_id: {job_id}")
         
         # Prepare configuration
         config = {
@@ -138,6 +140,9 @@ def generate_presentation():
             'config': config
         }
         
+        print(f"Job {job_id} initialized in active_jobs")
+        print(f"Current active jobs: {list(active_jobs.keys())}")
+        
         # Start background processing
         thread = threading.Thread(target=process_presentation_job, args=(job_id, config))
         thread.daemon = True
@@ -156,14 +161,38 @@ def generate_presentation():
 def get_job_status(job_id):
     """Get job status and progress"""
     try:
+        # Validate job_id format
+        if not job_id or len(job_id) < 10:
+            return jsonify({'error': 'Invalid job ID format'}), 400
+        
+        # Add debugging info
+        logger.info(f"Checking status for job_id: {job_id}")
+        logger.info(f"Active jobs: {list(active_jobs.keys())}")
+        logger.info(f"Completed jobs: {list(job_results.keys())}")
+        
         if job_id in active_jobs:
-            return jsonify(active_jobs[job_id])
+            response_data = active_jobs[job_id].copy()
+            response_data['source'] = 'active_jobs'
+            return jsonify(response_data)
         elif job_id in job_results:
-            return jsonify(job_results[job_id])
+            response_data = job_results[job_id].copy()
+            response_data['source'] = 'job_results'
+            return jsonify(response_data)
         else:
-            return jsonify({'error': 'Job not found'}), 404
+            # Provide more helpful error information
+            return jsonify({
+                'error': 'Job not found',
+                'job_id': job_id,
+                'active_jobs_count': len(active_jobs),
+                'completed_jobs_count': len(job_results),
+                'debug_info': {
+                    'active_job_ids': list(active_jobs.keys()),
+                    'completed_job_ids': list(job_results.keys())
+                }
+            }), 404
             
     except Exception as e:
+        logger.error(f"Status check failed for job {job_id}: {e}")
         return jsonify({'error': f'Status check failed: {str(e)}'}), 500
 
 @main.route('/api/download/<job_id>', methods=['GET'])
@@ -285,6 +314,23 @@ def preview_presentation(job_id):
         
     except Exception as e:
         return jsonify({'error': f'Preview failed: {str(e)}'}), 500
+
+@main.route('/api/debug/jobs', methods=['GET'])
+def debug_jobs():
+    """Debug endpoint to see all job tracking data"""
+    return jsonify({
+        'active_jobs': {
+            'count': len(active_jobs),
+            'jobs': {job_id: {'status': job_data.get('status'), 'progress': job_data.get('progress')} 
+                    for job_id, job_data in active_jobs.items()}
+        },
+        'completed_jobs': {
+            'count': len(job_results),
+            'jobs': {job_id: {'status': job_data.get('status')} 
+                    for job_id, job_data in job_results.items()}
+        },
+        'total_jobs': len(active_jobs) + len(job_results)
+    })
 
 # Error handlers
 @main.app_errorhandler(413)
