@@ -1,5 +1,6 @@
 import os
 import sys
+import shutil
 from flask import Blueprint, render_template, request, send_file, jsonify
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -64,8 +65,11 @@ def upload_file():
         unique_filename = f"{timestamp}_{filename}"
         
         # Create uploads directory if it doesn't exist
-        uploads_dir = os.path.join(os.getcwd(), 'uploads')
-        os.makedirs(uploads_dir, exist_ok=True)
+        if os.environ.get('DYNO'):  # Check if running on Heroku
+            uploads_dir = '/tmp'
+        else:
+            uploads_dir = os.path.join(os.getcwd(), 'uploads')
+            os.makedirs(uploads_dir, exist_ok=True)
         
         filepath = os.path.join(uploads_dir, unique_filename)
         file.save(filepath)
@@ -173,8 +177,11 @@ def download_presentation(job_id):
         if result['status'] != 'completed':
             return jsonify({'error': 'Presentation not ready'}), 400
         
-        # Use the specific download path
-        download_dir = r"C:\Users\Arnav\Documents\LangChain projects\ai_ppt_maker_langchain_web\outputs"
+        # Use environment-appropriate download path
+        if os.environ.get('DYNO'):  # Check if running on Heroku
+            download_dir = '/tmp'
+        else:
+            download_dir = os.path.join(os.getcwd(), 'outputs')
         download_filepath = os.path.join(download_dir, result['filename'])
         
         # Determine file format from the config or filename
@@ -197,7 +204,6 @@ def download_presentation(job_id):
             original_filepath = result['filepath']
             if os.path.exists(original_filepath):
                 # Copy from original location to download directory
-                import shutil
                 os.makedirs(download_dir, exist_ok=True)
                 shutil.copy2(original_filepath, download_filepath)
             else:

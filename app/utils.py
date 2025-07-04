@@ -196,9 +196,13 @@ def cleanup_old_files():
         current_time = datetime.now()
         cutoff_time = current_time - timedelta(hours=24)
         
-        # Use hardcoded paths since app config isn't available here
-        upload_folder = 'uploads'
-        output_folder = 'outputs'
+        # Use environment-appropriate paths
+        if os.environ.get('DYNO'):  # Check if running on Heroku
+            upload_folder = '/tmp'  # On Heroku, use /tmp for both uploads and outputs
+            output_folder = '/tmp'
+        else:
+            upload_folder = 'uploads'
+            output_folder = 'outputs'
         
         # Clean upload folder
         if os.path.exists(upload_folder):
@@ -403,7 +407,12 @@ def process_presentation_job(job_id: str, config: Dict):
             file_format = 'pptx'  # Ensure we use pptx for the creation
         
         # Create output filename with job ID
-        output_filename = os.path.join(output_folder, f"{job_id}_{base_filename}")
+        if os.environ.get('DYNO'):  # Check if running on Heroku
+            # On Heroku, use forward slashes and construct path manually to avoid Windows path issues
+            output_filename = f"/tmp/{job_id}_{base_filename}"
+        else:
+            # On local development, use os.path.join for proper path construction
+            output_filename = os.path.join(output_folder, f"{job_id}_{base_filename}")
         
         # Process flowcharts - convert simple format to Mermaid if needed
         processed_flowcharts = []
@@ -525,7 +534,10 @@ def process_presentation_job(job_id: str, config: Dict):
                 final_filepath = pptx_file
         else:
             final_output_filename = f"{job_id}_{base_filename}.pptx"
-            final_filepath = f"{output_filename}.pptx"
+            if os.environ.get('DYNO'):  # Check if running on Heroku
+                final_filepath = f"/tmp/{job_id}_{base_filename}.pptx"
+            else:
+                final_filepath = f"{output_filename}.pptx"
         
         active_jobs[job_id]['status'] = 'completed'
         active_jobs[job_id]['progress'] = 100

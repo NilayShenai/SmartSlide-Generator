@@ -11,13 +11,19 @@ def create_app():
     
     # Configuration
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
-    app.config['UPLOAD_FOLDER'] = 'uploads'
-    app.config['OUTPUT_FOLDER'] = 'outputs'
-    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-here')
     
-    # Ensure directories exist
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    os.makedirs(app.config['OUTPUT_FOLDER'], exist_ok=True)
+    # Use environment-appropriate paths
+    if os.environ.get('DYNO'):  # Check if running on Heroku
+        app.config['UPLOAD_FOLDER'] = '/tmp'
+        app.config['OUTPUT_FOLDER'] = '/tmp'
+    else:
+        app.config['UPLOAD_FOLDER'] = 'uploads'
+        app.config['OUTPUT_FOLDER'] = 'outputs'
+        # Ensure directories exist (only for local development)
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+        os.makedirs(app.config['OUTPUT_FOLDER'], exist_ok=True)
+    
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-here')
     
     # Register blueprints
     from .routes import main
