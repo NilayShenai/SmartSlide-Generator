@@ -894,12 +894,20 @@ def create_enhanced_ppt(slides_data, filename="presentation", output_format="ppt
     
     # Save presentation
     if output_format.lower() == "pptx":
-        final_filename = f"{filename}.pptx"
+        # Use /tmp directory for Heroku compatibility
+        if os.environ.get('DYNO'):  # Check if running on Heroku
+            final_filename = f"/tmp/{filename}.pptx"
+        else:
+            final_filename = f"{filename}.pptx"
         prs.save(final_filename)
         print(f"\n✅ Enhanced presentation saved as '{final_filename}'")
     else:
         print(f"\n⚠️ Only PPTX format supported for enhanced presentations")
-        final_filename = f"{filename}.pptx"
+        # Use /tmp directory for Heroku compatibility
+        if os.environ.get('DYNO'):  # Check if running on Heroku
+            final_filename = f"/tmp/{filename}.pptx"
+        else:
+            final_filename = f"{filename}.pptx"
         prs.save(final_filename)
         print(f"📝 Saved as '{final_filename}'")
 
