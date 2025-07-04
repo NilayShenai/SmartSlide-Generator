@@ -380,9 +380,12 @@ def process_presentation_job(job_id: str, config: Dict):
         # Create presentation
         logger.info(f"Job {job_id}: Creating presentation")
         
-        # Use hardcoded output folder
-        output_folder = 'outputs'
-        os.makedirs(output_folder, exist_ok=True)
+        # Set output folder based on environment
+        if os.environ.get('DYNO'):  # Check if running on Heroku
+            output_folder = '/tmp'
+        else:
+            output_folder = 'outputs'
+            os.makedirs(output_folder, exist_ok=True)
         
         # Get file format from config (default to pptx)
         file_format = config.get('file_format', 'pptx')
