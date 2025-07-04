@@ -186,14 +186,64 @@ if os.environ.get('DYNO'):  # Running on Heroku
         format='%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
     )
     
-    # Add memory monitoring
-    import psutil
-    logger.info(f"Memory usage: {psutil.virtual_memory().percent}%")
-    logger.info(f"Available memory: {psutil.virtual_memory().available / 1024 / 1024:.1f} MB")
+    # Add memory monitoring (optional)
+    try:
+        import psutil
+        logger.info(f"Memory usage: {psutil.virtual_memory().percent}%")
+        logger.info(f"Available memory: {psutil.virtual_memory().available / 1024 / 1024:.1f} MB")
+    except ImportError:
+        logger.info("psutil not available - memory monitoring disabled")
 
 # Global variables for job tracking
 active_jobs: Dict[str, Dict] = {}
 job_results: Dict[str, Dict] = {}
+
+# Job persistence (optional - helps with debugging)
+def save_job_state():
+    """Save job state to temporary files for debugging"""
+    try:
+        import json
+        if os.environ.get('DYNO'):  # On Heroku
+            base_path = '/tmp'
+        else:
+            base_path = '.'
+        
+        with open(f'{base_path}/active_jobs.json', 'w') as f:
+            json.dump(active_jobs, f, indent=2)
+        with open(f'{base_path}/job_results.json', 'w') as f:
+            json.dump(job_results, f, indent=2)
+    except Exception as e:
+        logger.warning(f"Failed to save job state: {e}")
+
+def load_job_state():
+    """Load job state from temporary files (debugging)"""
+    try:
+        import json
+        global active_jobs, job_results
+        
+        if os.environ.get('DYNO'):  # On Heroku
+            base_path = '/tmp'
+        else:
+            base_path = '.'
+        
+        try:
+            with open(f'{base_path}/active_jobs.json', 'r') as f:
+                active_jobs = json.load(f)
+        except FileNotFoundError:
+            pass
+            
+        try:
+            with open(f'{base_path}/job_results.json', 'r') as f:
+                job_results = json.load(f)
+        except FileNotFoundError:
+            pass
+            
+        logger.info(f"Loaded job state: {len(active_jobs)} active, {len(job_results)} completed")
+    except Exception as e:
+        logger.warning(f"Failed to load job state: {e}")
+
+# Load existing state on startup
+load_job_state()
 
 # Allowed file extensions
 ALLOWED_EXTENSIONS = {'txt', 'docx', 'pdf'}
@@ -374,10 +424,12 @@ def process_presentation_job(job_id: str, config: Dict):
     """Background task to process presentation generation"""
     try:
         print(f"Starting job processing for job_id: {job_id}")
+        logger.info(f"Job {job_id}: Starting background processing")
         
         # Ensure job exists in active_jobs
         if job_id not in active_jobs:
             print(f"WARNING: Job {job_id} not found in active_jobs at start of processing")
+            logger.warning(f"Job {job_id} not found in active_jobs, creating entry")
             active_jobs[job_id] = {
                 'status': 'started',
                 'progress': 0,
@@ -385,9 +437,14 @@ def process_presentation_job(job_id: str, config: Dict):
                 'config': config
             }
         
+        # Add a small delay to ensure the client has time to check status
+        import time
+        time.sleep(1)
+        
         # Update job status
         active_jobs[job_id]['status'] = 'generating_content'
         active_jobs[job_id]['progress'] = 20
+        save_job_state()  # Save state after update
         print(f"Job {job_id}: Updated status to generating_content")
         
         # Generate content
@@ -396,6 +453,7 @@ def process_presentation_job(job_id: str, config: Dict):
         
         active_jobs[job_id]['status'] = 'parsing_content'
         active_jobs[job_id]['progress'] = 40
+        save_job_state()  # Save state after update
         
         # Parse slides
         logger.info(f"Job {job_id}: Parsing slide content")
@@ -406,6 +464,7 @@ def process_presentation_job(job_id: str, config: Dict):
         
         active_jobs[job_id]['status'] = 'creating_presentation'
         active_jobs[job_id]['progress'] = 60
+        save_job_state()  # Save state after update
         
         # Create presentation
         logger.info(f"Job {job_id}: Creating presentation")
@@ -583,9 +642,10 @@ def process_presentation_job(job_id: str, config: Dict):
         print(f"Active jobs remaining: {list(active_jobs.keys())}")
         print(f"Completed jobs: {list(job_results.keys())}")
         
-        # Remove from active jobs
+        # Remove from active jobs and save state
         if job_id in active_jobs:
             del active_jobs[job_id]
+        save_job_state()  # Save final state
         
     except Exception as e:
         logger.error(f"Job {job_id} failed: {e}")
@@ -601,6 +661,7 @@ def process_presentation_job(job_id: str, config: Dict):
             'error': str(e),
             'created_at': datetime.now().isoformat()
         }
+        save_job_state()  # Save error state
 
 # Utility functions for external use
 class PPTGeneratorAPI:
