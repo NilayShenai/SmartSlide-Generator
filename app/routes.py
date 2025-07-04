@@ -12,7 +12,7 @@ import uuid
 from .utils import (
     allowed_file, read_document_content, generate_presentation_content,
     process_presentation_job, active_jobs, job_results, cleanup_old_files,
-    save_job_state, logger
+    logger
 )
 
 main = Blueprint("main", __name__)
@@ -139,9 +139,6 @@ def generate_presentation():
             'created_at': datetime.now().isoformat(),
             'config': config
         }
-        
-        # Save job state immediately
-        save_job_state()
         
         print(f"Job {job_id} initialized in active_jobs")
         print(f"Current active jobs: {list(active_jobs.keys())}")
