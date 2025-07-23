@@ -1,0 +1,30 @@
+[Unit]
+Description=SmartSlide Generator - AI PowerPoint Generator
+Documentation=https://github.com/arnuvp/SmartSlide-Generator
+After=network.target
+
+[Service]
+Type=notify
+User=smartslide
+Group=smartslide
+WorkingDirectory=/opt/smartslide
+Environment="PATH=/opt/smartslide/venv/bin"
+Environment="PYTHONPATH=/opt/smartslide"
+ExecStart=/opt/smartslide/venv/bin/gunicorn --workers 4 --timeout 600 --bind 0.0.0.0:5001 --access-logfile - --error-logfile - wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+Restart=always
+RestartSec=10
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+StandardOutput=journal
+StandardError=journal
+
+# Security settings
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/smartslide /tmp /var/log/smartslide
+
+[Install]
+WantedBy=multi-user.target

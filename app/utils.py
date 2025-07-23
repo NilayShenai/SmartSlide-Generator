@@ -1,5 +1,3 @@
-# utils.py - Utility functions for Enhanced PowerPoint Generator
-
 import os
 import sys
 from pathlib import Path
@@ -7,140 +5,380 @@ import platform
 import re
 import traceback
 
-# Add the parent directory to Python path for importing ppt_maker_flo
 current_dir = Path(__file__).parent
 parent_dir = current_dir.parent
 sys.path.insert(0, str(parent_dir))
 
 def convert_pptx_to_pdf(pptx_path: str, pdf_path: str):
-    """Convert PPTX file to PDF using PowerPoint automation"""
     try:
+        print(f"Starting PDF conversion: {pptx_path} -> {pdf_path}")
+        
+        if platform.system() in ["Linux", "Darwin"]:
+            try:
+                success = convert_pptx_to_pdf_libreoffice(pptx_path, pdf_path)
+                if success:
+                    print("PDF conversion successful using LibreOffice")
+                    return True
+            except Exception as e:
+                print(f"LibreOffice method failed: {e}")
+        
+        try:
+            success = convert_pptx_to_pdf_with_reportlab(pptx_path, pdf_path)
+            if success:
+                print("PDF conversion successful using ReportLab")
+                return True
+        except Exception as e:
+            print(f"ReportLab method failed: {e}")
+        
         if platform.system() == "Windows":
             try:
-                import comtypes.client
-                import comtypes
-                import time
-                
-                # Initialize COM for this thread
-                comtypes.CoInitialize()
-                
-                # Ensure absolute paths
-                pptx_abs_path = os.path.abspath(pptx_path)
-                pdf_abs_path = os.path.abspath(pdf_path)
-                
-                # Check if source file exists
-                if not os.path.exists(pptx_abs_path):
-                    raise Exception(f"Source PPTX file not found: {pptx_abs_path}")
-                
-                print(f"Converting {pptx_abs_path} to {pdf_abs_path}")
-                
-                # Initialize PowerPoint application with error handling
-                powerpoint = None
-                presentation = None
-                
-                try:
-                    powerpoint = comtypes.client.CreateObject("Powerpoint.Application")
-                    powerpoint.Visible = True  # Must be visible for some PowerPoint versions
-                    powerpoint.DisplayAlerts = False  # Disable alerts that might block automation
-                    time.sleep(2)  # Give PowerPoint more time to initialize
-                    
-                    # Open the presentation
-                    presentation = powerpoint.Presentations.Open(pptx_abs_path, ReadOnly=True, Untitled=False, WithWindow=False)
-                    time.sleep(2)  # Give time to fully load
-                    
-                    # Try SaveAs method first (simpler)
-                    try:
-                        # Use absolute path and ensure directory exists
-                        pdf_dir = os.path.dirname(pdf_abs_path)
-                        os.makedirs(pdf_dir, exist_ok=True)
-                        
-                        presentation.SaveAs(pdf_abs_path, 32)  # 32 = ppSaveAsPDF
-                        time.sleep(3)  # Wait longer for file to be written
-                        print("Used SaveAs method for PDF conversion")
-                    except Exception as save_error:
-                        print(f"SaveAs failed: {save_error}, trying ExportAsFixedFormat...")
-                        # Fallback to ExportAsFixedFormat
-                        presentation.ExportAsFixedFormat(
-                            OutputFileName=pdf_abs_path,
-                            FixedFormatType=2,  # ppFixedFormatTypePDF
-                            Intent=1,  # ppFixedFormatIntentPrint
-                            FrameSlides=False,
-                            HandoutOrder=1,
-                            OutputType=1,  # ppPrintOutputSlides
-                            PrintHiddenSlides=False,
-                            PrintRange=None,
-                            RangeType=1,  # ppPrintAll
-                            SlideShowName="",
-                            IncludeDocProps=True,
-                            KeepIRMSettings=True,
-                            DocStructureTags=True,
-                            BitmapMissingFonts=True,
-                            UseDocumentICCProfile=False
-                        )
-                        time.sleep(3)  # Wait for export to complete
-                        print("Used ExportAsFixedFormat method for PDF conversion")
-                    
-                    # Wait longer for the export to complete and file to be flushed
-                    time.sleep(3)
-                    
-                    # Verify PDF was created and is valid
-                    max_attempts = 10
-                    for attempt in range(max_attempts):
-                        if os.path.exists(pdf_abs_path):
-                            file_size = os.path.getsize(pdf_abs_path)
-                            if file_size > 1000:  # PDF should be at least 1KB
-                                # Try to verify it's a valid PDF by checking header
-                                try:
-                                    with open(pdf_abs_path, 'rb') as f:
-                                        header = f.read(5)
-                                        if header.startswith(b'%PDF-'):
-                                            print(f"Successfully converted to PDF: {pdf_abs_path}")
-                                            return True
-                                        else:
-                                            print(f"Invalid PDF header: {header}")
-                                except Exception as read_error:
-                                    print(f"Cannot read PDF file: {read_error}")
-                            else:
-                                print(f"PDF file too small ({file_size} bytes), waiting...")
-                        
-                        time.sleep(1)  # Wait before retrying
-                    
-                    raise Exception("PDF file was not created properly or is invalid")
-                        
-                except Exception as ppt_error:
-                    raise Exception(f"PowerPoint automation failed: {ppt_error}")
-                    
-                finally:
-                    # Clean up PowerPoint process with more thorough cleanup
-                    try:
-                        if 'presentation' in locals() and presentation:
-                            presentation.Close()
-                            time.sleep(1)
-                        if 'powerpoint' in locals() and powerpoint:
-                            powerpoint.Quit()
-                            time.sleep(2)  # Give more time for cleanup
-                    except Exception as cleanup_error:
-                        print(f"Cleanup warning: {cleanup_error}")
-                        pass
-                    
-                    # Uninitialize COM
-                    try:
-                        comtypes.CoUninitialize()
-                    except:
-                        pass
-                    
-            except ImportError:
-                raise Exception("comtypes not available for PDF conversion - install with: pip install comtypes")
+                success = convert_pptx_to_pdf_com(pptx_path, pdf_path)
+                if success:
+                    print("PDF conversion successful using COM automation")
+                    return True
             except Exception as e:
-                raise Exception(f"PDF conversion error: {e}")
-        else:
-            raise Exception("PDF conversion only supported on Windows with PowerPoint installed")
-            
+                print(f"COM automation method failed: {e}")
+        
+        try:
+            success = convert_pptx_to_pdf_simple(pptx_path, pdf_path)
+            if success:
+                print("PDF conversion successful using simple text extraction")
+                return True
+        except Exception as e:
+            print(f"Simple extraction method failed: {e}")
+        
+        raise Exception("All PDF conversion methods failed")
+        
     except Exception as e:
         print(f"PDF conversion error: {e}")
         raise
 
-# Load environment variables
+def convert_pptx_to_pdf_simple(pptx_path: str, pdf_path: str):
+    try:
+        from reportlab.pdfgen import canvas
+        from reportlab.lib.pagesizes import A4
+        from reportlab.lib.units import inch
+        from pptx import Presentation
+        
+        print(f"Converting PPTX to PDF using simple text extraction: {pptx_path} -> {pdf_path}")
+        
+        prs = Presentation(pptx_path)
+        
+        pdf_dir = os.path.dirname(pdf_path)
+        os.makedirs(pdf_dir, exist_ok=True)
+        
+        c = canvas.Canvas(pdf_path, pagesize=A4)
+        page_width, page_height = A4
+        
+        for slide_idx, slide in enumerate(prs.slides):
+            if slide_idx > 0:
+                c.showPage()
+            
+            c.setFont("Helvetica-Bold", 16)
+            c.drawString(inch, page_height - inch, f"Slide {slide_idx + 1}")
+            
+            y_position = page_height - 1.5 * inch
+            c.setFont("Helvetica", 11)
+            
+            for shape in slide.shapes:
+                try:
+                    if hasattr(shape, 'text') and shape.text.strip():
+                        text = shape.text.strip()
+                        lines = text.split('\n')
+                        
+                        for line in lines:
+                            if line.strip() and y_position > inch:
+                                if len(line) > 80:
+                                    words = line.split(' ')
+                                    current_line = ''
+                                    for word in words:
+                                        if len(current_line + ' ' + word) < 80:
+                                            current_line += (' ' if current_line else '') + word
+                                        else:
+                                            if current_line:
+                                                c.drawString(inch, y_position, current_line)
+                                                y_position -= 15
+                                            current_line = word
+                                    if current_line and y_position > inch:
+                                        c.drawString(inch, y_position, current_line)
+                                        y_position -= 15
+                                else:
+                                    c.drawString(inch, y_position, line.strip())
+                                    y_position -= 15
+                
+                except Exception as shape_error:
+                    print(f"Error processing shape: {shape_error}")
+                    continue
+            
+            c.setFont("Helvetica", 8)
+            c.drawString(page_width - 1.5*inch, 0.5*inch, f"Page {slide_idx + 1}")
+        
+        c.save()
+        
+        if os.path.exists(pdf_path) and os.path.getsize(pdf_path) > 500:
+            print(f"Successfully converted to PDF using simple method: {pdf_path}")
+            return True
+        else:
+            raise Exception("PDF file was not created properly")
+            
+    except Exception as e:
+        print(f"Simple PDF conversion failed: {e}")
+        return False
+
+def convert_pptx_to_pdf_with_reportlab(pptx_path: str, pdf_path: str):
+    try:
+        from pptx import Presentation
+        from reportlab.pdfgen import canvas
+        from reportlab.lib.pagesizes import letter, A4
+        from reportlab.lib.utils import ImageReader
+        from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
+        from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+        from reportlab.lib.units import inch
+        from reportlab.lib.colors import black, blue
+        import io
+        from PIL import Image
+        
+        print(f"Converting PPTX to PDF using ReportLab: {pptx_path} -> {pdf_path}")
+        
+        prs = Presentation(pptx_path)
+        
+        doc = SimpleDocTemplate(pdf_path, pagesize=A4)
+        story = []
+        styles = getSampleStyleSheet()
+        
+        title_style = ParagraphStyle(
+            'CustomTitle',
+            parent=styles['Heading1'],
+            fontSize=18,
+            spaceAfter=12,
+            textColor=blue
+        )
+        
+        bullet_style = ParagraphStyle(
+            'CustomBullet',
+            parent=styles['Normal'],
+            fontSize=12,
+            spaceAfter=6,
+            leftIndent=20,
+            bulletIndent=10
+        )
+        
+        for slide_num, slide in enumerate(prs.slides, 1):
+            story.append(Paragraph(f"Slide {slide_num}", title_style))
+            story.append(Spacer(1, 12))
+            
+            slide_text = []
+            for shape in slide.shapes:
+                if hasattr(shape, "text") and shape.text.strip():
+                    text = shape.text.strip()
+                    if text:
+                        slide_text.append(text)
+            
+            for text in slide_text:
+                lines = text.split('\n')
+                for line in lines:
+                    if line.strip():
+                        story.append(Paragraph(line.strip(), bullet_style))
+            
+            if slide_num < len(prs.slides):
+                story.append(PageBreak())
+        
+        doc.build(story)
+        
+        if os.path.exists(pdf_path) and os.path.getsize(pdf_path) > 1000:
+            print(f"Successfully converted to PDF using ReportLab: {pdf_path}")
+            return True
+        else:
+            raise Exception("PDF file was not created properly")
+            
+    except ImportError as e:
+        print(f"ReportLab not available: {e}")
+        return False
+    except Exception as e:
+        print(f"ReportLab conversion failed: {e}")
+        return False
+
+def convert_pptx_to_pdf_com(pptx_path: str, pdf_path: str):
+    try:
+        import comtypes.client
+        import comtypes
+        import time
+        
+        comtypes.CoInitialize()
+        
+        pptx_abs_path = os.path.abspath(pptx_path)
+        pdf_abs_path = os.path.abspath(pdf_path)
+        
+        if not os.path.exists(pptx_abs_path):
+            raise Exception(f"Source PPTX file not found: {pptx_abs_path}")
+        
+        print(f"Converting {pptx_abs_path} to {pdf_abs_path}")
+        
+        powerpoint = None
+        presentation = None
+        
+        try:
+            powerpoint = comtypes.client.CreateObject("Powerpoint.Application")
+            powerpoint.Visible = False
+            powerpoint.DisplayAlerts = False
+            time.sleep(1)
+            
+            presentation = powerpoint.Presentations.Open(
+                pptx_abs_path, 
+                ReadOnly=True, 
+                Untitled=False, 
+                WithWindow=False
+            )
+            time.sleep(1)
+            
+            pdf_dir = os.path.dirname(pdf_abs_path)
+            os.makedirs(pdf_dir, exist_ok=True)
+            
+            presentation.ExportAsFixedFormat(
+                OutputFileName=pdf_abs_path,
+                FixedFormatType=2,
+                Intent=1,
+                FrameSlides=False,
+                HandoutOrder=1,
+                OutputType=1,
+                PrintHiddenSlides=False,
+                PrintRange=None,
+                RangeType=1,
+                SlideShowName="",
+                IncludeDocProps=True,
+                KeepIRMSettings=True,
+                DocStructureTags=True,
+                BitmapMissingFonts=True,
+                UseDocumentICCProfile=False
+            )
+            
+            time.sleep(2)
+            
+            if os.path.exists(pdf_abs_path) and os.path.getsize(pdf_abs_path) > 1000:
+                print(f"Successfully converted to PDF using COM: {pdf_abs_path}")
+                return True
+            else:
+                raise Exception("PDF file was not created properly")
+                
+        finally:
+            try:
+                if presentation:
+                    presentation.Close()
+                if powerpoint:
+                    powerpoint.Quit()
+                time.sleep(1)
+            except:
+                pass
+            
+            try:
+                comtypes.CoUninitialize()
+            except:
+                pass
+                
+    except ImportError:
+        print("comtypes not available for PDF conversion")
+        return False
+    except Exception as e:
+        print(f"COM automation failed: {e}")
+        return False
+
+def convert_pptx_to_pdf_libreoffice(pptx_path: str, pdf_path: str):
+    try:
+        import subprocess
+        import shutil
+        
+        libreoffice_cmd = None
+        for cmd in ['libreoffice', 'soffice']:
+            if shutil.which(cmd):
+                libreoffice_cmd = cmd
+                break
+        
+        if not libreoffice_cmd:
+            print("LibreOffice not found in PATH")
+            return False
+            
+        try:
+            result = subprocess.run([libreoffice_cmd, '--version'], 
+                                    capture_output=True, check=True, timeout=10)
+            print(f"Found LibreOffice: {result.stdout.decode().strip()}")
+        except (subprocess.CalledProcessError, FileNotFoundError, subprocess.TimeoutExpired):
+            print("LibreOffice not available or not responding")
+            return False
+        
+        print(f"Converting PPTX to PDF using LibreOffice: {pptx_path} -> {pdf_path}")
+        
+        pptx_abs_path = os.path.abspath(pptx_path)
+        pdf_abs_path = os.path.abspath(pdf_path)
+        pdf_dir = os.path.dirname(pdf_abs_path)
+        
+        os.makedirs(pdf_dir, exist_ok=True)
+        
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            cmd = [
+                libreoffice_cmd,
+                '--headless',
+                '--invisible',
+                '--nodefault', 
+                '--nolockcheck',
+                '--nologo',
+                '--norestore',
+                '--convert-to', 'pdf',
+                '--outdir', temp_dir,
+                pptx_abs_path
+            ]
+            
+            try:
+                result = subprocess.run(
+                    cmd, 
+                    capture_output=True, 
+                    text=True, 
+                    timeout=120,
+                    cwd=temp_dir
+                )
+                
+                print(f"LibreOffice command: {' '.join(cmd)}")
+                print(f"Return code: {result.returncode}")
+                if result.stdout:
+                    print(f"Stdout: {result.stdout}")
+                if result.stderr:
+                    print(f"Stderr: {result.stderr}")
+                
+                if result.returncode == 0:
+                    base_name = os.path.splitext(os.path.basename(pptx_abs_path))[0]
+                    generated_pdf = os.path.join(temp_dir, f"{base_name}.pdf")
+                    
+                    print(f"Looking for generated PDF: {generated_pdf}")
+                    
+                    if os.path.exists(generated_pdf):
+                        shutil.move(generated_pdf, pdf_abs_path)
+                        
+                        if os.path.exists(pdf_abs_path) and os.path.getsize(pdf_abs_path) > 1000:
+                            print(f"Successfully converted to PDF using LibreOffice: {pdf_abs_path}")
+                            return True
+                        else:
+                            print(f"Generated PDF is too small: {os.path.getsize(pdf_abs_path) if os.path.exists(pdf_abs_path) else 'not found'}")
+                    else:
+                        print(f"Generated PDF not found at expected location: {generated_pdf}")
+                        try:
+                            temp_files = os.listdir(temp_dir)
+                            print(f"Files in temp directory: {temp_files}")
+                        except:
+                            pass
+                else:
+                    print(f"LibreOffice conversion failed with return code: {result.returncode}")
+            
+            except subprocess.TimeoutExpired:
+                print("LibreOffice conversion timed out")
+            except Exception as subprocess_error:
+                print(f"Subprocess error: {subprocess_error}")
+        
+        return False
+        
+    except Exception as e:
+        print(f"LibreOffice conversion failed: {e}")
+        return False
+
 try:
     from dotenv import load_dotenv
     load_dotenv(parent_dir / '.env')
@@ -156,7 +394,6 @@ import logging
 from typing import Dict, List, Optional, Any
 import traceback
 
-# Import your existing PowerPoint generator functions
 try:
     from ppt_maker_flo import (
         ChatGoogleGenerativeAI,
@@ -174,50 +411,41 @@ except ImportError as e:
     print("Python path:", sys.path)
     raise
 
-# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Configure logging for production
-if os.environ.get('DYNO'):  # Running on Heroku
+if os.environ.get('DYNO'):
     import logging
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
     )
     
-    # Add memory monitoring
     import psutil
     logger.info(f"Memory usage: {psutil.virtual_memory().percent}%")
     logger.info(f"Available memory: {psutil.virtual_memory().available / 1024 / 1024:.1f} MB")
 
-# Global variables for job tracking
 active_jobs: Dict[str, Dict] = {}
 job_results: Dict[str, Dict] = {}
 
-# Allowed file extensions
 ALLOWED_EXTENSIONS = {'txt', 'docx', 'pdf'}
 
 def allowed_file(filename):
-    """Check if uploaded file has allowed extension"""
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def cleanup_old_files():
-    """Clean up files older than 24 hours"""
     try:
         current_time = datetime.now()
         cutoff_time = current_time - timedelta(hours=24)
         
-        # Use environment-appropriate paths
-        if os.environ.get('DYNO'):  # Check if running on Heroku
-            upload_folder = '/tmp'  # On Heroku, use /tmp for both uploads and outputs
+        if os.environ.get('DYNO'):
+            upload_folder = '/tmp'
             output_folder = '/tmp'
         else:
             upload_folder = 'uploads'
             output_folder = 'outputs'
         
-        # Clean upload folder
         if os.path.exists(upload_folder):
             for filename in os.listdir(upload_folder):
                 filepath = os.path.join(upload_folder, filename)
@@ -227,7 +455,6 @@ def cleanup_old_files():
                         os.remove(filepath)
                         logger.info(f"Cleaned up old upload: {filename}")
         
-        # Clean output folder
         if os.path.exists(output_folder):
             for filename in os.listdir(output_folder):
                 filepath = os.path.join(output_folder, filename)
@@ -236,12 +463,11 @@ def cleanup_old_files():
                     if file_time < cutoff_time:
                         os.remove(filepath)
                         logger.info(f"Cleaned up old output: {filename}")
-                    
+                        
     except Exception as e:
         logger.error(f"Error during cleanup: {e}")
 
 def read_document_content(filepath: str) -> str:
-    """Read content from uploaded document"""
     try:
         ext = os.path.splitext(filepath)[1].lower()
         
@@ -284,25 +510,19 @@ def read_document_content(filepath: str) -> str:
         return f"Error reading document: {str(e)}"
 
 def generate_presentation_content(config: Dict) -> str:
-    """Generate presentation content using AI"""
     try:
-        # Initialize LLM
         llm = ChatGoogleGenerativeAI(
             model="gemini-1.5-pro",
             temperature=0.0
         )
         
         if config.get('doc_content'):
-            # Use document content with few-shot examples for consistent formatting
             logger.info(f"Generating content from document using few-shot examples")
             
-            # Use few-shot prompt for document summarization
             few_shot_prompt = create_enhanced_few_shot_prompt()
             
-            # Modify the suffix to handle document content
             from langchain.prompts import PromptTemplate
             
-            # Create a custom prompt that includes examples but handles document content
             doc_template = f"""Here are examples of how to create presentations:
 
 {few_shot_prompt.prefix}
@@ -339,10 +559,8 @@ Create a {{num_slides}}-slide presentation following the exact format shown. Inc
             })
             
         else:
-            # Generate from topic using few-shot prompts
             logger.info(f"Generating content for topic: {config.get('topic')}")
             
-            # Use the enhanced few-shot prompt
             few_shot_prompt = create_enhanced_few_shot_prompt()
             chain = few_shot_prompt | llm
             
@@ -371,11 +589,9 @@ Create a {{num_slides}}-slide presentation following the exact format shown. Inc
         raise
 
 def process_presentation_job(job_id: str, config: Dict):
-    """Background task to process presentation generation"""
     try:
         print(f"Starting job processing for job_id: {job_id}")
         
-        # Ensure job exists in active_jobs
         if job_id not in active_jobs:
             print(f"WARNING: Job {job_id} not found in active_jobs at start of processing")
             active_jobs[job_id] = {
@@ -385,19 +601,16 @@ def process_presentation_job(job_id: str, config: Dict):
                 'config': config
             }
         
-        # Update job status
         active_jobs[job_id]['status'] = 'generating_content'
         active_jobs[job_id]['progress'] = 20
         print(f"Job {job_id}: Updated status to generating_content")
         
-        # Generate content
         logger.info(f"Job {job_id}: Generating AI content")
         content = generate_presentation_content(config)
         
         active_jobs[job_id]['status'] = 'parsing_content'
         active_jobs[job_id]['progress'] = 40
         
-        # Parse slides
         logger.info(f"Job {job_id}: Parsing slide content")
         slides_data = parse_slides_enhanced(content)
         
@@ -407,40 +620,31 @@ def process_presentation_job(job_id: str, config: Dict):
         active_jobs[job_id]['status'] = 'creating_presentation'
         active_jobs[job_id]['progress'] = 60
         
-        # Create presentation
         logger.info(f"Job {job_id}: Creating presentation")
         
-        # Set output folder based on environment
-        if os.environ.get('DYNO'):  # Check if running on Heroku
+        if os.environ.get('DYNO'):
             output_folder = '/tmp'
         else:
             output_folder = 'outputs'
             os.makedirs(output_folder, exist_ok=True)
         
-        # Get file format from config (default to pptx)
         file_format = config.get('file_format', 'pptx')
         
-        # Create the full path where we want the file to be saved
         user_filename = config['filename']
         
-        # Remove any existing extension and add the correct one
         base_filename = user_filename.split('.')[0] if '.' in user_filename else user_filename
         
         if file_format == 'pdf':
             final_extension = '.pdf'
         else:
             final_extension = '.pptx'
-            file_format = 'pptx'  # Ensure we use pptx for the creation
+            file_format = 'pptx'
         
-        # Create output filename with job ID
-        if os.environ.get('DYNO'):  # Check if running on Heroku
-            # On Heroku, use forward slashes and construct path manually to avoid Windows path issues
+        if os.environ.get('DYNO'):
             output_filename = f"/tmp/{job_id}_{base_filename}"
         else:
-            # On local development, use os.path.join for proper path construction
             output_filename = os.path.join(output_folder, f"{job_id}_{base_filename}")
         
-        # Process flowcharts - convert simple format to Mermaid if needed
         processed_flowcharts = []
         flowcharts = config.get('flowcharts', [])
         logger.info(f"Processing {len(flowcharts)} flowcharts")
@@ -460,7 +664,6 @@ def process_presentation_job(job_id: str, config: Dict):
                     logger.info(f"Successfully converted simple flowchart format to Mermaid")
                     logger.info(f"Converted description: {converted_desc[:100]}...")
                 else:
-                    # Keep original if conversion failed
                     processed_flowcharts.append(flowchart)
                     logger.warning(f"Flowchart conversion failed, using original format")
             else:
@@ -469,7 +672,6 @@ def process_presentation_job(job_id: str, config: Dict):
         
         logger.info(f"Final processed flowcharts: {len(processed_flowcharts)}")
         
-        # Convert flowcharts from dict format to tuple format for create_enhanced_ppt
         flowcharts_tuples = []
         for flowchart in processed_flowcharts:
             if isinstance(flowchart, dict):
@@ -482,7 +684,6 @@ def process_presentation_job(job_id: str, config: Dict):
         
         logger.info(f"Final flowcharts for PPT creation: {len(flowcharts_tuples)} tuples")
         
-        # Pass the full path (without extension) to create_enhanced_ppt
         create_enhanced_ppt(
             slides_data=slides_data,
             filename=output_filename,
@@ -492,7 +693,6 @@ def process_presentation_job(job_id: str, config: Dict):
             flowcharts=flowcharts_tuples
         )
         
-        # Handle PDF conversion if requested
         if config.get('file_format') == 'pdf':
             logger.info(f"Job {job_id}: Converting to PDF")
             active_jobs[job_id]['status'] = 'converting_to_pdf'
@@ -501,20 +701,21 @@ def process_presentation_job(job_id: str, config: Dict):
             pptx_file = f"{output_filename}.pptx"
             pdf_file = f"{output_filename}.pdf"
             
+            logger.info(f"PPTX file path: {pptx_file}")
+            logger.info(f"PDF file path: {pdf_file}")
+            logger.info(f"PPTX exists: {os.path.exists(pptx_file)}")
+            
             try:
-                # Verify PPTX file exists before conversion
                 if not os.path.exists(pptx_file):
                     raise Exception(f"PPTX file not found for conversion: {pptx_file}")
                 
                 logger.info(f"Converting PPTX to PDF: {pptx_file} -> {pdf_file}")
                 
-                # Convert PPTX to PDF
                 success = convert_pptx_to_pdf(pptx_file, pdf_file)
                 
                 if not success:
                     raise Exception("PDF conversion returned failure status")
                 
-                # Verify PDF was created successfully
                 if not os.path.exists(pdf_file):
                     raise Exception("PDF file was not created")
                 
@@ -522,7 +723,6 @@ def process_presentation_job(job_id: str, config: Dict):
                 if pdf_size == 0:
                     raise Exception("PDF file is empty")
                 
-                # Additional verification: Check if it's a valid PDF
                 try:
                     with open(pdf_file, 'rb') as f:
                         header = f.read(10)
@@ -533,7 +733,6 @@ def process_presentation_job(job_id: str, config: Dict):
                 
                 logger.info(f"PDF created successfully: {pdf_file} ({pdf_size} bytes)")
                 
-                # Remove the temporary PPTX file
                 try:
                     if os.path.exists(pptx_file):
                         os.remove(pptx_file)
@@ -547,9 +746,10 @@ def process_presentation_job(job_id: str, config: Dict):
                 
             except Exception as pdf_error:
                 logger.error(f"PDF conversion failed: {pdf_error}")
+                import traceback
+                logger.error(f"PDF conversion traceback: {traceback.format_exc()}")
                 logger.warning("Falling back to PPTX format")
                 
-                # Clean up any partial PDF file
                 try:
                     if os.path.exists(pdf_file):
                         os.remove(pdf_file)
@@ -560,7 +760,7 @@ def process_presentation_job(job_id: str, config: Dict):
                 final_filepath = pptx_file
         else:
             final_output_filename = f"{job_id}_{base_filename}.pptx"
-            if os.environ.get('DYNO'):  # Check if running on Heroku
+            if os.environ.get('DYNO'):
                 final_filepath = f"/tmp/{job_id}_{base_filename}.pptx"
             else:
                 final_filepath = f"{output_filename}.pptx"
@@ -568,7 +768,6 @@ def process_presentation_job(job_id: str, config: Dict):
         active_jobs[job_id]['status'] = 'completed'
         active_jobs[job_id]['progress'] = 100
         
-        # Store results with the correct filename
         job_results[job_id] = {
             'status': 'completed',
             'filename': final_output_filename,
@@ -583,7 +782,6 @@ def process_presentation_job(job_id: str, config: Dict):
         print(f"Active jobs remaining: {list(active_jobs.keys())}")
         print(f"Completed jobs: {list(job_results.keys())}")
         
-        # Remove from active jobs
         if job_id in active_jobs:
             del active_jobs[job_id]
         
@@ -591,7 +789,6 @@ def process_presentation_job(job_id: str, config: Dict):
         logger.error(f"Job {job_id} failed: {e}")
         print(f"Job {job_id} FAILED: {e}")
         
-        # Ensure job failure is recorded
         if job_id in active_jobs:
             active_jobs[job_id]['status'] = 'failed'
             active_jobs[job_id]['error'] = str(e)
@@ -602,15 +799,12 @@ def process_presentation_job(job_id: str, config: Dict):
             'created_at': datetime.now().isoformat()
         }
 
-# Utility functions for external use
 class PPTGeneratorAPI:
-    """Utility class for easier API integration"""
     
     def __init__(self, base_url: str = "http://localhost:5000"):
         self.base_url = base_url.rstrip('/')
     
     def health_check(self):
-        """Check if API is healthy"""
         import requests
         try:
             response = requests.get(f"{self.base_url}/api/health")
@@ -619,13 +813,11 @@ class PPTGeneratorAPI:
             return False
     
     def get_config(self):
-        """Get available configuration options"""
         import requests
         response = requests.get(f"{self.base_url}/api/config")
         return response.json() if response.status_code == 200 else None
     
     def upload_document(self, file_path: str):
-        """Upload document file"""
         import requests
         with open(file_path, 'rb') as f:
             files = {'file': f}
@@ -633,19 +825,16 @@ class PPTGeneratorAPI:
         return response.json()
     
     def generate_presentation(self, config: Dict):
-        """Start presentation generation"""
         import requests
         response = requests.post(f"{self.base_url}/api/generate", json=config)
         return response.json()
     
     def get_job_status(self, job_id: str):
-        """Get job status"""
         import requests
         response = requests.get(f"{self.base_url}/api/status/{job_id}")
         return response.json()
     
     def download_presentation(self, job_id: str, save_path: str):
-        """Download completed presentation"""
         import requests
         response = requests.get(f"{self.base_url}/api/download/{job_id}")
         if response.status_code == 200:
@@ -655,25 +844,20 @@ class PPTGeneratorAPI:
         return False
 
 def convert_simple_flowchart_to_mermaid(description: str) -> str:
-    """Convert simple flowchart format (A->B;B->C) to Mermaid syntax"""
     try:
         logger.info(f"Converting flowchart: {description[:50]}...")
         
-        # If it already looks like Mermaid syntax, return as-is
         if description.strip().lower().startswith(('flowchart', 'graph', 'sequencediagram')):
             logger.info("Input appears to be valid Mermaid syntax, returning as-is")
             return description
         
-        # Clean the input
         description = description.strip()
         if not description:
             logger.warning("Empty flowchart description provided")
             return None
         
-        # Parse simple format like "A->B;B->C" or "Start->Process->End"
         connections = []
         
-        # Split by semicolon, comma, or newline
         parts = re.split(r'[;\n,]', description)
         logger.info(f"Split into {len(parts)} parts: {parts}")
         
@@ -685,7 +869,6 @@ def convert_simple_flowchart_to_mermaid(description: str) -> str:
             if not part:
                 continue
                 
-            # Handle different arrow formats: ->, →, -->, =>
             if '->' in part:
                 arrow_parts = part.split('->')
             elif '→' in part:
@@ -695,7 +878,6 @@ def convert_simple_flowchart_to_mermaid(description: str) -> str:
             elif '=>' in part:
                 arrow_parts = part.split('=>')
             else:
-                # Single nodes or no arrows, skip
                 logger.warning(f"No arrows found in part: {part}")
                 continue
                 
@@ -704,11 +886,9 @@ def convert_simple_flowchart_to_mermaid(description: str) -> str:
                 to_node = arrow_parts[i + 1].strip()
                 
                 if from_node and to_node:
-                    # Clean node names (remove special characters that might break Mermaid)
                     from_clean = re.sub(r'[^\w\s-]', '', from_node).strip()
                     to_clean = re.sub(r'[^\w\s-]', '', to_node).strip()
                     
-                    # Create node IDs (replace spaces with underscores)
                     from_id = re.sub(r'\s+', '_', from_clean)
                     to_id = re.sub(r'\s+', '_', to_clean)
                     
@@ -719,16 +899,13 @@ def convert_simple_flowchart_to_mermaid(description: str) -> str:
                         logger.debug(f"Added edge: {from_id} -> {to_id}")
         
         if not edges:
-            # If no valid connections found, return None
             logger.warning("No valid edges found in flowchart description")
             return None
         
         logger.info(f"Found {len(nodes)} nodes and {len(edges)} edges")
         
-        # Generate Mermaid flowchart
         mermaid_lines = ['flowchart TD']
         
-        # Add node definitions (use brackets for better readability)
         for node_id, node_label in nodes:
             if node_label.lower() in ['start', 'begin']:
                 mermaid_lines.append(f'    {node_id}([{node_label}])')
@@ -739,7 +916,6 @@ def convert_simple_flowchart_to_mermaid(description: str) -> str:
             else:
                 mermaid_lines.append(f'    {node_id}[{node_label}]')
         
-        # Add connections
         for from_id, to_id in edges:
             mermaid_lines.append(f'    {from_id} --> {to_id}')
         

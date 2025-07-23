@@ -1,0 +1,499 @@
+2025-07-23 02:04:42,555 - comtypes.client._code_cache - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\ndsti\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python313\\site-packages\\comtypes\\gen\\__init__.py'>
+2025-07-23 02:04:42,556 - comtypes.client._code_cache - INFO - Using writeable comtypes cache directory: 'C:\Users\ndsti\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\comtypes\gen'
+2025-07-23 02:04:42,609 - root - INFO - SmartSlide Generator starting in PRODUCTION mode
+2025-07-23 02:04:42,609 - root - INFO - Debug mode: False
+2025-07-23 02:04:42,609 - root - INFO - Environment file: .env.production
+2025-07-23 02:05:16,416 - comtypes.client._code_cache - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\ndsti\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python313\\site-packages\\comtypes\\gen\\__init__.py'>
+2025-07-23 02:05:16,417 - comtypes.client._code_cache - INFO - Using writeable comtypes cache directory: 'C:\Users\ndsti\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\comtypes\gen'
+2025-07-23 02:05:16,469 - root - INFO - SmartSlide Generator starting in PRODUCTION mode
+2025-07-23 02:05:16,469 - root - INFO - Debug mode: False
+2025-07-23 02:05:16,469 - root - INFO - Environment file: .env.production
+2025-07-23 02:07:14,639 - comtypes.client._code_cache - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\ndsti\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python313\\site-packages\\comtypes\\gen\\__init__.py'>
+2025-07-23 02:07:14,640 - comtypes.client._code_cache - INFO - Using writeable comtypes cache directory: 'C:\Users\ndsti\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\comtypes\gen'
+2025-07-23 02:07:14,697 - root - INFO - SmartSlide Generator starting in PRODUCTION mode
+2025-07-23 02:07:14,697 - root - INFO - Debug mode: False
+2025-07-23 02:07:14,697 - root - INFO - Environment file: .env.production
+2025-07-23 02:07:14,710 - waitress - INFO - Serving on http://0.0.0.0:5001
+2025-07-23 02:08:11,945 - app.utils - INFO - Job 04cd3be1-0db8-46b8-b123-1c7add67b217: Generating AI content
+2025-07-23 02:08:11,947 - app.utils - INFO - Generating content from document using few-shot examples
+2025-07-23 02:08:13,954 - app.utils - INFO - Checking status for job_id: 04cd3be1-0db8-46b8-b123-1c7add67b217
+2025-07-23 02:08:13,954 - app.utils - INFO - Active jobs: ['04cd3be1-0db8-46b8-b123-1c7add67b217']
+2025-07-23 02:08:13,954 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:08:15,962 - app.utils - INFO - Checking status for job_id: 04cd3be1-0db8-46b8-b123-1c7add67b217
+2025-07-23 02:08:15,962 - app.utils - INFO - Active jobs: ['04cd3be1-0db8-46b8-b123-1c7add67b217']
+2025-07-23 02:08:15,962 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:08:16,710 - app.utils - INFO - LLM output type: <class 'langchain_core.messages.ai.AIMessage'>
+2025-07-23 02:08:16,710 - app.utils - INFO - LLM output: content="Slide 1: Urgent Climate Change Threat\nGlobal temperatures are rising at an alarming rate, impacting weather patterns.\nSea levels are rising, threatening coastal communities and ecosystems.\nExtreme weather events, like hurricanes and droughts, are becoming more frequent.\nImmediate action is needed to mitigate the effects of climate change.\nimage_query: climate change global warming effects\n\nSlide 2: Causes of Climate Change\nGreenhouse gas emissions from burning fossil fuels trap ...
+2025-07-23 02:08:16,710 - app.utils - INFO - Extracted text length: 1262
+2025-07-23 02:08:16,710 - app.utils - INFO - Job 04cd3be1-0db8-46b8-b123-1c7add67b217: Parsing slide content
+2025-07-23 02:08:16,711 - app.utils - INFO - Job 04cd3be1-0db8-46b8-b123-1c7add67b217: Creating presentation
+2025-07-23 02:08:16,711 - app.utils - INFO - Processing 0 flowcharts
+2025-07-23 02:08:16,711 - app.utils - INFO - Final processed flowcharts: 0
+2025-07-23 02:08:16,711 - app.utils - INFO - Final flowcharts for PPT creation: 0 tuples
+2025-07-23 02:08:17,963 - app.utils - INFO - Checking status for job_id: 04cd3be1-0db8-46b8-b123-1c7add67b217
+2025-07-23 02:08:17,963 - app.utils - INFO - Active jobs: ['04cd3be1-0db8-46b8-b123-1c7add67b217']
+2025-07-23 02:08:17,963 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:08:19,959 - app.utils - INFO - Checking status for job_id: 04cd3be1-0db8-46b8-b123-1c7add67b217
+2025-07-23 02:08:19,959 - app.utils - INFO - Active jobs: ['04cd3be1-0db8-46b8-b123-1c7add67b217']
+2025-07-23 02:08:19,959 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:08:21,952 - app.utils - INFO - Checking status for job_id: 04cd3be1-0db8-46b8-b123-1c7add67b217
+2025-07-23 02:08:21,952 - app.utils - INFO - Active jobs: ['04cd3be1-0db8-46b8-b123-1c7add67b217']
+2025-07-23 02:08:21,952 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:08:23,959 - app.utils - INFO - Checking status for job_id: 04cd3be1-0db8-46b8-b123-1c7add67b217
+2025-07-23 02:08:23,959 - app.utils - INFO - Active jobs: ['04cd3be1-0db8-46b8-b123-1c7add67b217']
+2025-07-23 02:08:23,959 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:08:25,952 - app.utils - INFO - Checking status for job_id: 04cd3be1-0db8-46b8-b123-1c7add67b217
+2025-07-23 02:08:25,952 - app.utils - INFO - Active jobs: ['04cd3be1-0db8-46b8-b123-1c7add67b217']
+2025-07-23 02:08:25,952 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:08:27,671 - app.utils - INFO - Job 04cd3be1-0db8-46b8-b123-1c7add67b217: Converting to PDF
+2025-07-23 02:08:27,671 - app.utils - INFO - Converting PPTX to PDF: outputs\04cd3be1-0db8-46b8-b123-1c7add67b217_my-presentaafasdftion.pptx -> outputs\04cd3be1-0db8-46b8-b123-1c7add67b217_my-presentaafasdftion.pdf
+2025-07-23 02:08:27,672 - app.utils - ERROR - PDF conversion failed: PDF conversion error: PowerPoint automation failed: [WinError -2147221005] Invalid class string
+2025-07-23 02:08:27,672 - app.utils - WARNING - Falling back to PPTX format
+2025-07-23 02:08:27,673 - app.utils - INFO - Job 04cd3be1-0db8-46b8-b123-1c7add67b217: Completed successfully
+2025-07-23 02:08:27,960 - app.utils - INFO - Checking status for job_id: 04cd3be1-0db8-46b8-b123-1c7add67b217
+2025-07-23 02:08:27,960 - app.utils - INFO - Active jobs: []
+2025-07-23 02:08:27,960 - app.utils - INFO - Completed jobs: ['04cd3be1-0db8-46b8-b123-1c7add67b217']
+2025-07-23 02:08:56,409 - app.utils - INFO - Job 44543341-3513-4dd5-a2bb-d1181c6f5c2b: Generating AI content
+2025-07-23 02:08:56,411 - app.utils - INFO - Generating content from document using few-shot examples
+2025-07-23 02:08:58,415 - app.utils - INFO - Checking status for job_id: 44543341-3513-4dd5-a2bb-d1181c6f5c2b
+2025-07-23 02:08:58,415 - app.utils - INFO - Active jobs: ['44543341-3513-4dd5-a2bb-d1181c6f5c2b']
+2025-07-23 02:08:58,415 - app.utils - INFO - Completed jobs: ['04cd3be1-0db8-46b8-b123-1c7add67b217']
+2025-07-23 02:09:00,427 - app.utils - INFO - Checking status for job_id: 44543341-3513-4dd5-a2bb-d1181c6f5c2b
+2025-07-23 02:09:00,427 - app.utils - INFO - Active jobs: ['44543341-3513-4dd5-a2bb-d1181c6f5c2b']
+2025-07-23 02:09:00,428 - app.utils - INFO - Completed jobs: ['04cd3be1-0db8-46b8-b123-1c7add67b217']
+2025-07-23 02:09:01,022 - app.utils - INFO - LLM output type: <class 'langchain_core.messages.ai.AIMessage'>
+2025-07-23 02:09:01,022 - app.utils - INFO - LLM output: content="Slide 1: Urgent Climate Change Threat\nGlobal temperatures are rising at an alarming rate, impacting weather patterns.\nSea levels are rising, threatening coastal communities and ecosystems.\nExtreme weather events, like hurricanes and droughts, are becoming more frequent.\nImmediate action is needed to mitigate the effects of climate change.\nimage_query: climate change global warming effects\n\nSlide 2: Causes of Climate Change\nGreenhouse gas emissions from burning fossil fuels trap ...
+2025-07-23 02:09:01,022 - app.utils - INFO - Extracted text length: 1262
+2025-07-23 02:09:01,022 - app.utils - INFO - Job 44543341-3513-4dd5-a2bb-d1181c6f5c2b: Parsing slide content
+2025-07-23 02:09:01,023 - app.utils - INFO - Job 44543341-3513-4dd5-a2bb-d1181c6f5c2b: Creating presentation
+2025-07-23 02:09:01,023 - app.utils - INFO - Processing 0 flowcharts
+2025-07-23 02:09:01,023 - app.utils - INFO - Final processed flowcharts: 0
+2025-07-23 02:09:01,023 - app.utils - INFO - Final flowcharts for PPT creation: 0 tuples
+2025-07-23 02:09:02,416 - app.utils - INFO - Checking status for job_id: 44543341-3513-4dd5-a2bb-d1181c6f5c2b
+2025-07-23 02:09:02,416 - app.utils - INFO - Active jobs: ['44543341-3513-4dd5-a2bb-d1181c6f5c2b']
+2025-07-23 02:09:02,417 - app.utils - INFO - Completed jobs: ['04cd3be1-0db8-46b8-b123-1c7add67b217']
+2025-07-23 02:09:04,526 - app.utils - INFO - Checking status for job_id: 44543341-3513-4dd5-a2bb-d1181c6f5c2b
+2025-07-23 02:09:04,526 - app.utils - INFO - Active jobs: ['44543341-3513-4dd5-a2bb-d1181c6f5c2b']
+2025-07-23 02:09:04,526 - app.utils - INFO - Completed jobs: ['04cd3be1-0db8-46b8-b123-1c7add67b217']
+2025-07-23 02:09:06,413 - app.utils - INFO - Checking status for job_id: 44543341-3513-4dd5-a2bb-d1181c6f5c2b
+2025-07-23 02:09:06,413 - app.utils - INFO - Active jobs: ['44543341-3513-4dd5-a2bb-d1181c6f5c2b']
+2025-07-23 02:09:06,413 - app.utils - INFO - Completed jobs: ['04cd3be1-0db8-46b8-b123-1c7add67b217']
+2025-07-23 02:09:07,469 - app.utils - INFO - Job 44543341-3513-4dd5-a2bb-d1181c6f5c2b: Completed successfully
+2025-07-23 02:09:08,421 - app.utils - INFO - Checking status for job_id: 44543341-3513-4dd5-a2bb-d1181c6f5c2b
+2025-07-23 02:09:08,421 - app.utils - INFO - Active jobs: []
+2025-07-23 02:09:08,421 - app.utils - INFO - Completed jobs: ['04cd3be1-0db8-46b8-b123-1c7add67b217', '44543341-3513-4dd5-a2bb-d1181c6f5c2b']
+2025-07-23 02:12:29,859 - comtypes.client._code_cache - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\ndsti\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python313\\site-packages\\comtypes\\gen\\__init__.py'>
+2025-07-23 02:12:29,860 - comtypes.client._code_cache - INFO - Using writeable comtypes cache directory: 'C:\Users\ndsti\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\comtypes\gen'
+2025-07-23 02:12:29,944 - root - INFO - SmartSlide Generator starting in PRODUCTION mode
+2025-07-23 02:12:29,944 - root - INFO - Debug mode: False
+2025-07-23 02:12:29,944 - root - INFO - Environment file: .env.production
+2025-07-23 02:12:29,960 - waitress - INFO - Serving on http://0.0.0.0:5001
+2025-07-23 02:13:33,586 - app.utils - INFO - Job 6692e211-219c-48d7-8bfb-3da9d9fe7092: Generating AI content
+2025-07-23 02:13:33,604 - app.utils - INFO - Generating content for topic: about homosexual relations
+2025-07-23 02:13:33,604 - app.utils - INFO - Using few-shot prompt with input: {'topic': 'about homosexual relations', 'num_slides': '6', 'tone': 'professional', 'audience': 'general public', 'theme': 'corporate'}
+2025-07-23 02:13:35,604 - app.utils - INFO - Checking status for job_id: 6692e211-219c-48d7-8bfb-3da9d9fe7092
+2025-07-23 02:13:35,604 - app.utils - INFO - Active jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:13:35,604 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:13:37,593 - app.utils - INFO - Checking status for job_id: 6692e211-219c-48d7-8bfb-3da9d9fe7092
+2025-07-23 02:13:37,593 - app.utils - INFO - Active jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:13:37,593 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:13:39,604 - app.utils - INFO - Checking status for job_id: 6692e211-219c-48d7-8bfb-3da9d9fe7092
+2025-07-23 02:13:39,605 - app.utils - INFO - Active jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:13:39,605 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:13:41,605 - app.utils - INFO - Checking status for job_id: 6692e211-219c-48d7-8bfb-3da9d9fe7092
+2025-07-23 02:13:41,606 - app.utils - INFO - Active jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:13:41,606 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:13:43,097 - app.utils - INFO - LLM output type: <class 'langchain_core.messages.ai.AIMessage'>
+2025-07-23 02:13:43,097 - app.utils - INFO - LLM output: content='Slide 1: Understanding Homosexual Relationships\nSame-sex relationships share core elements with all relationships: love, commitment, shared values\nThese relationships face unique societal challenges, including legal and social discrimination\nFocus on fostering empathy and understanding diverse relationship structures\nBuilding inclusive communities benefits everyone by promoting acceptance and respect\nimage_query: diverse couples holding hands love\nflowchart_description: omit\n\nSl...
+2025-07-23 02:13:43,098 - app.utils - INFO - Extracted text length: 2757
+2025-07-23 02:13:43,098 - app.utils - INFO - Job 6692e211-219c-48d7-8bfb-3da9d9fe7092: Parsing slide content
+2025-07-23 02:13:43,098 - app.utils - INFO - Job 6692e211-219c-48d7-8bfb-3da9d9fe7092: Creating presentation
+2025-07-23 02:13:43,098 - app.utils - INFO - Processing 0 flowcharts
+2025-07-23 02:13:43,098 - app.utils - INFO - Final processed flowcharts: 0
+2025-07-23 02:13:43,098 - app.utils - INFO - Final flowcharts for PPT creation: 0 tuples
+2025-07-23 02:13:43,592 - app.utils - INFO - Checking status for job_id: 6692e211-219c-48d7-8bfb-3da9d9fe7092
+2025-07-23 02:13:43,592 - app.utils - INFO - Active jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:13:43,592 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:13:45,602 - app.utils - INFO - Checking status for job_id: 6692e211-219c-48d7-8bfb-3da9d9fe7092
+2025-07-23 02:13:45,602 - app.utils - INFO - Active jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:13:45,602 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:13:47,598 - app.utils - INFO - Checking status for job_id: 6692e211-219c-48d7-8bfb-3da9d9fe7092
+2025-07-23 02:13:47,599 - app.utils - INFO - Active jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:13:47,599 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:13:49,600 - app.utils - INFO - Checking status for job_id: 6692e211-219c-48d7-8bfb-3da9d9fe7092
+2025-07-23 02:13:49,600 - app.utils - INFO - Active jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:13:49,600 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:13:51,594 - app.utils - INFO - Checking status for job_id: 6692e211-219c-48d7-8bfb-3da9d9fe7092
+2025-07-23 02:13:51,595 - app.utils - INFO - Active jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:13:51,595 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:13:53,600 - app.utils - INFO - Checking status for job_id: 6692e211-219c-48d7-8bfb-3da9d9fe7092
+2025-07-23 02:13:53,600 - app.utils - INFO - Active jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:13:53,600 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:13:55,593 - app.utils - INFO - Checking status for job_id: 6692e211-219c-48d7-8bfb-3da9d9fe7092
+2025-07-23 02:13:55,593 - app.utils - INFO - Active jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:13:55,593 - app.utils - INFO - Completed jobs: []
+2025-07-23 02:13:56,129 - app.utils - INFO - Job 6692e211-219c-48d7-8bfb-3da9d9fe7092: Completed successfully
+2025-07-23 02:13:57,596 - app.utils - INFO - Checking status for job_id: 6692e211-219c-48d7-8bfb-3da9d9fe7092
+2025-07-23 02:13:57,596 - app.utils - INFO - Active jobs: []
+2025-07-23 02:13:57,596 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:14:42,474 - app.utils - INFO - Job 9cbcfe7f-1181-4b39-ab67-425a6a021046: Generating AI content
+2025-07-23 02:14:42,482 - app.utils - INFO - Generating content for topic: about homosexual relations
+2025-07-23 02:14:42,483 - app.utils - INFO - Using few-shot prompt with input: {'topic': 'about homosexual relations', 'num_slides': '6', 'tone': 'friendly', 'audience': 'general public', 'theme': 'academic'}
+2025-07-23 02:14:44,479 - app.utils - INFO - Checking status for job_id: 9cbcfe7f-1181-4b39-ab67-425a6a021046
+2025-07-23 02:14:44,479 - app.utils - INFO - Active jobs: ['9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:14:44,479 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:14:46,487 - app.utils - INFO - Checking status for job_id: 9cbcfe7f-1181-4b39-ab67-425a6a021046
+2025-07-23 02:14:46,487 - app.utils - INFO - Active jobs: ['9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:14:46,487 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:14:48,490 - app.utils - INFO - Checking status for job_id: 9cbcfe7f-1181-4b39-ab67-425a6a021046
+2025-07-23 02:14:48,490 - app.utils - INFO - Active jobs: ['9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:14:48,490 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:14:50,485 - app.utils - INFO - Checking status for job_id: 9cbcfe7f-1181-4b39-ab67-425a6a021046
+2025-07-23 02:14:50,485 - app.utils - INFO - Active jobs: ['9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:14:50,485 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:14:50,694 - app.utils - INFO - LLM output type: <class 'langchain_core.messages.ai.AIMessage'>
+2025-07-23 02:14:50,694 - app.utils - INFO - LLM output: content='Slide 1: Understanding Homosexual Relationships\nSame-sex relationships share core elements with all relationships\nBuilt on love, intimacy, commitment, and shared values\nFace unique societal challenges and legal considerations\nImportant to foster understanding and acceptance\nimage_query: diverse couples holding hands\nflowchart_description: omit\n\nSlide 2: Historical Context of Same-Sex Relationships\nEvidence of same-sex relationships exists across cultures and history\nOften face...
+2025-07-23 02:14:50,694 - app.utils - INFO - Extracted text length: 2167
+2025-07-23 02:14:50,695 - app.utils - INFO - Job 9cbcfe7f-1181-4b39-ab67-425a6a021046: Parsing slide content
+2025-07-23 02:14:50,695 - app.utils - INFO - Job 9cbcfe7f-1181-4b39-ab67-425a6a021046: Creating presentation
+2025-07-23 02:14:50,695 - app.utils - INFO - Processing 0 flowcharts
+2025-07-23 02:14:50,695 - app.utils - INFO - Final processed flowcharts: 0
+2025-07-23 02:14:50,695 - app.utils - INFO - Final flowcharts for PPT creation: 0 tuples
+2025-07-23 02:14:52,488 - app.utils - INFO - Checking status for job_id: 9cbcfe7f-1181-4b39-ab67-425a6a021046
+2025-07-23 02:14:52,488 - app.utils - INFO - Active jobs: ['9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:14:52,488 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:14:54,490 - app.utils - INFO - Checking status for job_id: 9cbcfe7f-1181-4b39-ab67-425a6a021046
+2025-07-23 02:14:54,490 - app.utils - INFO - Active jobs: ['9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:14:54,490 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:14:56,492 - app.utils - INFO - Checking status for job_id: 9cbcfe7f-1181-4b39-ab67-425a6a021046
+2025-07-23 02:14:56,492 - app.utils - INFO - Active jobs: ['9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:14:56,492 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:14:58,485 - app.utils - INFO - Checking status for job_id: 9cbcfe7f-1181-4b39-ab67-425a6a021046
+2025-07-23 02:14:58,485 - app.utils - INFO - Active jobs: ['9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:14:58,485 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:15:00,481 - app.utils - INFO - Checking status for job_id: 9cbcfe7f-1181-4b39-ab67-425a6a021046
+2025-07-23 02:15:00,481 - app.utils - INFO - Active jobs: ['9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:15:00,481 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:15:02,489 - app.utils - INFO - Checking status for job_id: 9cbcfe7f-1181-4b39-ab67-425a6a021046
+2025-07-23 02:15:02,489 - app.utils - INFO - Active jobs: ['9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:15:02,489 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:15:04,489 - app.utils - INFO - Checking status for job_id: 9cbcfe7f-1181-4b39-ab67-425a6a021046
+2025-07-23 02:15:04,490 - app.utils - INFO - Active jobs: ['9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:15:04,490 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:15:06,484 - app.utils - INFO - Checking status for job_id: 9cbcfe7f-1181-4b39-ab67-425a6a021046
+2025-07-23 02:15:06,485 - app.utils - INFO - Active jobs: ['9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:15:06,485 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092']
+2025-07-23 02:15:07,060 - app.utils - INFO - Job 9cbcfe7f-1181-4b39-ab67-425a6a021046: Completed successfully
+2025-07-23 02:15:08,489 - app.utils - INFO - Checking status for job_id: 9cbcfe7f-1181-4b39-ab67-425a6a021046
+2025-07-23 02:15:08,490 - app.utils - INFO - Active jobs: []
+2025-07-23 02:15:08,490 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:24:33,409 - app.utils - INFO - Job 18fc2796-07d3-4430-8006-5671d2c5ccbd: Generating AI content
+2025-07-23 02:24:33,411 - app.utils - INFO - Generating content from document using few-shot examples
+2025-07-23 02:24:35,417 - app.utils - INFO - Checking status for job_id: 18fc2796-07d3-4430-8006-5671d2c5ccbd
+2025-07-23 02:24:35,417 - app.utils - INFO - Active jobs: ['18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:24:35,417 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:24:37,424 - app.utils - INFO - Checking status for job_id: 18fc2796-07d3-4430-8006-5671d2c5ccbd
+2025-07-23 02:24:37,424 - app.utils - INFO - Active jobs: ['18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:24:37,425 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:24:39,416 - app.utils - INFO - Checking status for job_id: 18fc2796-07d3-4430-8006-5671d2c5ccbd
+2025-07-23 02:24:39,416 - app.utils - INFO - Active jobs: ['18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:24:39,416 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:24:40,872 - app.utils - INFO - LLM output type: <class 'langchain_core.messages.ai.AIMessage'>
+2025-07-23 02:24:40,872 - app.utils - INFO - LLM output: content="Slide 1: Internship Completion: Nilay Shenai\nNilay Shenai successfully completed his Data Science internship\nInternship at Scripton Softwares Pvt. Ltd. concluded on June 20, 2025\nDemonstrated dedication and keen interest in data-driven solutions\nimage_query: data science internship certificate celebration\nflowchart_description: omit\n\nSlide 2: Internship Details\nInternship focused on Data Science and Machine Learning\nDuration: May 19, 2025 to June 20, 2025 (one month)\nContribut...
+2025-07-23 02:24:40,872 - app.utils - INFO - Extracted text length: 1479
+2025-07-23 02:24:40,873 - app.utils - INFO - Job 18fc2796-07d3-4430-8006-5671d2c5ccbd: Parsing slide content
+2025-07-23 02:24:40,873 - app.utils - INFO - Job 18fc2796-07d3-4430-8006-5671d2c5ccbd: Creating presentation
+2025-07-23 02:24:40,873 - app.utils - INFO - Processing 0 flowcharts
+2025-07-23 02:24:40,873 - app.utils - INFO - Final processed flowcharts: 0
+2025-07-23 02:24:40,874 - app.utils - INFO - Final flowcharts for PPT creation: 0 tuples
+2025-07-23 02:24:41,412 - app.utils - INFO - Checking status for job_id: 18fc2796-07d3-4430-8006-5671d2c5ccbd
+2025-07-23 02:24:41,413 - app.utils - INFO - Active jobs: ['18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:24:41,413 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:24:43,413 - app.utils - INFO - Checking status for job_id: 18fc2796-07d3-4430-8006-5671d2c5ccbd
+2025-07-23 02:24:43,413 - app.utils - INFO - Active jobs: ['18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:24:43,413 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:24:45,420 - app.utils - INFO - Checking status for job_id: 18fc2796-07d3-4430-8006-5671d2c5ccbd
+2025-07-23 02:24:45,420 - app.utils - INFO - Active jobs: ['18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:24:45,420 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:24:47,442 - app.utils - INFO - Checking status for job_id: 18fc2796-07d3-4430-8006-5671d2c5ccbd
+2025-07-23 02:24:47,442 - app.utils - INFO - Active jobs: ['18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:24:47,442 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:24:49,427 - app.utils - INFO - Checking status for job_id: 18fc2796-07d3-4430-8006-5671d2c5ccbd
+2025-07-23 02:24:49,428 - app.utils - INFO - Active jobs: ['18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:24:49,428 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046']
+2025-07-23 02:24:50,762 - app.utils - INFO - Job 18fc2796-07d3-4430-8006-5671d2c5ccbd: Converting to PDF
+2025-07-23 02:24:50,763 - app.utils - INFO - Converting PPTX to PDF: outputs\18fc2796-07d3-4430-8006-5671d2c5ccbd_my-presentation.pptx -> outputs\18fc2796-07d3-4430-8006-5671d2c5ccbd_my-presentation.pdf
+2025-07-23 02:24:50,764 - app.utils - ERROR - PDF conversion failed: PDF conversion error: PowerPoint automation failed: [WinError -2147221005] Invalid class string
+2025-07-23 02:24:50,765 - app.utils - WARNING - Falling back to PPTX format
+2025-07-23 02:24:50,765 - app.utils - INFO - Job 18fc2796-07d3-4430-8006-5671d2c5ccbd: Completed successfully
+2025-07-23 02:24:51,426 - app.utils - INFO - Checking status for job_id: 18fc2796-07d3-4430-8006-5671d2c5ccbd
+2025-07-23 02:24:51,426 - app.utils - INFO - Active jobs: []
+2025-07-23 02:24:51,426 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:30:35,204 - app.utils - INFO - Job 3dbe57c1-47d9-4672-94b4-1d1a5f85253c: Generating AI content
+2025-07-23 02:30:35,207 - app.utils - INFO - Generating content for topic: chamar caste
+2025-07-23 02:30:35,207 - app.utils - INFO - Using few-shot prompt with input: {'topic': 'chamar caste', 'num_slides': '20', 'tone': 'inspiring', 'audience': 'policymakers', 'theme': 'technology'}
+2025-07-23 02:30:37,222 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:30:37,223 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:30:37,223 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:30:39,211 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:30:39,211 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:30:39,212 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:30:41,214 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:30:41,214 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:30:41,215 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:30:43,209 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:30:43,209 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:30:43,209 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:30:45,208 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:30:45,208 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:30:45,208 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:30:47,224 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:30:47,224 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:30:47,224 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:30:49,210 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:30:49,210 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:30:49,210 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:30:51,215 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:30:51,215 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:30:51,215 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:30:53,224 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:30:53,224 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:30:53,224 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:30:55,221 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:30:55,221 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:30:55,222 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:30:57,217 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:30:57,217 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:30:57,217 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:30:58,019 - app.utils - INFO - LLM output type: <class 'langchain_core.messages.ai.AIMessage'>
+2025-07-23 02:30:58,019 - app.utils - INFO - LLM output: content='## Chamar Caste: A 20-Slide Presentation for Policymakers\n\n**Slide 1: Understanding the Chamar Community**\nHistorically associated with leatherwork and marginalized within the caste system\nSignificant population across India contributing to various sectors today\nFacing ongoing social and economic discrimination despite legal protections\nResilient community striving for equality and empowerment\nimage_query: chamar community india\n\n**Slide 2: Historical Context of the Chamar Cast...
+2025-07-23 02:30:58,019 - app.utils - INFO - Extracted text length: 7298
+2025-07-23 02:30:58,019 - app.utils - INFO - Job 3dbe57c1-47d9-4672-94b4-1d1a5f85253c: Parsing slide content
+2025-07-23 02:30:58,020 - app.utils - INFO - Job 3dbe57c1-47d9-4672-94b4-1d1a5f85253c: Creating presentation
+2025-07-23 02:30:58,020 - app.utils - INFO - Processing 0 flowcharts
+2025-07-23 02:30:58,020 - app.utils - INFO - Final processed flowcharts: 0
+2025-07-23 02:30:58,020 - app.utils - INFO - Final flowcharts for PPT creation: 0 tuples
+2025-07-23 02:30:59,211 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:30:59,211 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:30:59,211 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:01,209 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:01,209 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:01,209 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:03,210 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:03,210 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:03,210 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:05,224 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:05,224 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:05,224 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:07,219 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:07,220 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:07,220 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:09,210 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:09,210 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:09,210 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:11,217 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:11,217 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:11,217 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:13,209 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:13,210 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:13,210 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:15,215 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:15,216 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:15,216 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:17,223 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:17,223 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:17,223 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:19,214 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:19,214 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:19,215 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:21,216 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:21,216 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:21,216 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:23,210 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:23,210 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:23,210 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:25,216 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:25,216 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:25,216 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:27,211 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:27,211 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:27,212 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:29,219 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:29,219 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:29,219 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:31,213 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:31,213 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:31,213 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:33,221 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:33,222 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:33,222 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:35,218 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:35,218 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:35,219 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:37,214 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:37,215 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:37,215 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:39,209 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:39,209 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:39,209 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:41,211 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:41,211 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:41,211 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:43,222 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:43,222 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:43,222 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:45,209 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:45,209 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:45,209 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:47,223 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:47,223 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:47,223 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:49,210 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:49,211 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:49,211 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:51,215 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:51,215 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:51,215 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:53,224 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:53,224 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:53,224 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:55,217 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:55,218 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:55,218 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:57,208 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:57,209 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:57,209 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:31:59,211 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:31:59,211 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:31:59,211 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:32:01,213 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:32:01,213 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:32:01,214 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:32:03,219 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:32:03,220 - app.utils - INFO - Active jobs: ['3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:32:03,220 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd']
+2025-07-23 02:32:04,388 - app.utils - INFO - Job 3dbe57c1-47d9-4672-94b4-1d1a5f85253c: Converting to PDF
+2025-07-23 02:32:04,388 - app.utils - INFO - Converting PPTX to PDF: outputs\3dbe57c1-47d9-4672-94b4-1d1a5f85253c_my-presentation.pptx -> outputs\3dbe57c1-47d9-4672-94b4-1d1a5f85253c_my-presentation.pdf
+2025-07-23 02:32:04,389 - app.utils - ERROR - PDF conversion failed: PDF conversion error: PowerPoint automation failed: [WinError -2147221005] Invalid class string
+2025-07-23 02:32:04,389 - app.utils - WARNING - Falling back to PPTX format
+2025-07-23 02:32:04,389 - app.utils - INFO - Job 3dbe57c1-47d9-4672-94b4-1d1a5f85253c: Completed successfully
+2025-07-23 02:32:05,216 - app.utils - INFO - Checking status for job_id: 3dbe57c1-47d9-4672-94b4-1d1a5f85253c
+2025-07-23 02:32:05,216 - app.utils - INFO - Active jobs: []
+2025-07-23 02:32:05,216 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c']
+2025-07-23 02:34:26,013 - app.utils - INFO - Job 0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c: Generating AI content
+2025-07-23 02:34:26,016 - app.utils - INFO - Generating content for topic: Test PDF Generation
+2025-07-23 02:34:26,016 - app.utils - INFO - Using few-shot prompt with input: {'topic': 'Test PDF Generation', 'num_slides': '3', 'tone': 'professional', 'audience': 'general public', 'theme': 'corporate'}
+2025-07-23 02:34:31,045 - app.utils - INFO - LLM output type: <class 'langchain_core.messages.ai.AIMessage'>
+2025-07-23 02:34:31,045 - app.utils - INFO - LLM output: content='Slide 1: Understanding PDF Documents\nPDFs preserve formatting across different devices and operating systems\nThey are ideal for sharing documents reliably, maintaining visual integrity\nPDFs offer security features like password protection and digital signatures\nWidely used for official documents, ebooks, and forms\nimage_query: pdf document icon computer screen\nflowchart_description: \n\nSlide 2: Creating PDFs\nVarious methods exist for PDF creation, from software to online tools\n...
+2025-07-23 02:34:31,045 - app.utils - INFO - Extracted text length: 1129
+2025-07-23 02:34:31,045 - app.utils - INFO - Job 0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c: Parsing slide content
+2025-07-23 02:34:31,045 - app.utils - INFO - Job 0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c: Creating presentation
+2025-07-23 02:34:31,046 - app.utils - INFO - Processing 0 flowcharts
+2025-07-23 02:34:31,046 - app.utils - INFO - Final processed flowcharts: 0
+2025-07-23 02:34:31,046 - app.utils - INFO - Final flowcharts for PPT creation: 0 tuples
+2025-07-23 02:34:35,406 - app.utils - INFO - Job 0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c: Converting to PDF
+2025-07-23 02:34:35,407 - app.utils - INFO - Converting PPTX to PDF: outputs\0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c_test-pdf.pptx -> outputs\0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c_test-pdf.pdf
+2025-07-23 02:34:35,408 - app.utils - ERROR - PDF conversion failed: PDF conversion error: PowerPoint automation failed: [WinError -2147221005] Invalid class string
+2025-07-23 02:34:35,408 - app.utils - WARNING - Falling back to PPTX format
+2025-07-23 02:34:35,408 - app.utils - INFO - Job 0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c: Completed successfully
+2025-07-23 02:35:00,778 - app.utils - INFO - Checking status for job_id: 0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c
+2025-07-23 02:35:00,779 - app.utils - INFO - Active jobs: []
+2025-07-23 02:35:00,779 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c']
+2025-07-23 02:37:48,730 - app.utils - INFO - Job c8767fc9-2cff-4671-b1ef-9f18a961857c: Generating AI content
+2025-07-23 02:37:48,733 - app.utils - INFO - Generating content for topic: Debug PDF Test
+2025-07-23 02:37:48,733 - app.utils - INFO - Using few-shot prompt with input: {'topic': 'Debug PDF Test', 'num_slides': '2', 'tone': 'professional', 'audience': 'general public', 'theme': 'corporate'}
+2025-07-23 02:37:53,991 - app.utils - INFO - LLM output type: <class 'langchain_core.messages.ai.AIMessage'>
+2025-07-23 02:37:53,991 - app.utils - INFO - LLM output: content='Slide 1: Understanding PDF Errors\nPDF errors disrupt workflows and cause frustration\nCommon errors include corrupted files, missing fonts, and display issues\nTroubleshooting involves identifying the error type and applying solutions\nLearn techniques to fix common PDF problems and prevent future occurrences\nimage_query: pdf error message computer screen\nflowchart_description: omit\n\nSlide 2: Troubleshooting Steps\nCheck for file corruption using online PDF repair tools\nVerify fon...
+2025-07-23 02:37:53,991 - app.utils - INFO - Extracted text length: 1037
+2025-07-23 02:37:53,991 - app.utils - INFO - Job c8767fc9-2cff-4671-b1ef-9f18a961857c: Parsing slide content
+2025-07-23 02:37:53,992 - app.utils - INFO - Job c8767fc9-2cff-4671-b1ef-9f18a961857c: Creating presentation
+2025-07-23 02:37:53,992 - app.utils - INFO - Processing 0 flowcharts
+2025-07-23 02:37:53,992 - app.utils - INFO - Final processed flowcharts: 0
+2025-07-23 02:37:53,992 - app.utils - INFO - Final flowcharts for PPT creation: 0 tuples
+2025-07-23 02:37:59,275 - app.utils - INFO - Job c8767fc9-2cff-4671-b1ef-9f18a961857c: Converting to PDF
+2025-07-23 02:37:59,275 - app.utils - INFO - Converting PPTX to PDF: outputs\c8767fc9-2cff-4671-b1ef-9f18a961857c_debug-test.pptx -> outputs\c8767fc9-2cff-4671-b1ef-9f18a961857c_debug-test.pdf
+2025-07-23 02:37:59,276 - app.utils - ERROR - PDF conversion failed: PDF conversion error: PowerPoint automation failed: [WinError -2147221005] Invalid class string
+2025-07-23 02:37:59,276 - app.utils - WARNING - Falling back to PPTX format
+2025-07-23 02:37:59,276 - app.utils - INFO - Job c8767fc9-2cff-4671-b1ef-9f18a961857c: Completed successfully
+2025-07-23 02:38:07,688 - app.utils - INFO - Job 90821545-bd2a-44fd-b21e-3ed7bffa4ffc: Generating AI content
+2025-07-23 02:38:07,690 - app.utils - INFO - Generating content for topic: non veg food
+2025-07-23 02:38:07,690 - app.utils - INFO - Using few-shot prompt with input: {'topic': 'non veg food', 'num_slides': '10', 'tone': 'urgent', 'audience': 'policymakers', 'theme': 'environment'}
+2025-07-23 02:38:09,699 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:09,699 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:09,700 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:11,708 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:11,708 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:11,708 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:13,700 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:13,700 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:13,700 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:15,700 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:15,700 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:15,700 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:17,707 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:17,707 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:17,708 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:19,708 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:19,708 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:19,708 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:19,823 - app.utils - INFO - LLM output type: <class 'langchain_core.messages.ai.AIMessage'>
+2025-07-23 02:38:19,823 - app.utils - INFO - LLM output: content="Slide 1: The Urgent Need for Sustainable Food Systems\nGlobal meat consumption is projected to double by 2050\nCurrent agricultural practices are unsustainable\nIntensive animal farming contributes significantly to greenhouse gas emissions\nShifting towards sustainable food systems is crucial for environmental health\nimage_query: global meat consumption environmental impact\n\nSlide 2: Environmental Impact of Animal Agriculture\nGreenhouse gas emissions from livestock contribute to cli...
+2025-07-23 02:38:19,823 - app.utils - INFO - Extracted text length: 3887
+2025-07-23 02:38:19,824 - app.utils - INFO - Job 90821545-bd2a-44fd-b21e-3ed7bffa4ffc: Parsing slide content
+2025-07-23 02:38:19,824 - app.utils - INFO - Job 90821545-bd2a-44fd-b21e-3ed7bffa4ffc: Creating presentation
+2025-07-23 02:38:19,824 - app.utils - INFO - Processing 0 flowcharts
+2025-07-23 02:38:19,824 - app.utils - INFO - Final processed flowcharts: 0
+2025-07-23 02:38:19,824 - app.utils - INFO - Final flowcharts for PPT creation: 0 tuples
+2025-07-23 02:38:21,700 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:21,700 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:21,700 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:23,707 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:23,707 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:23,707 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:25,694 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:25,694 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:25,694 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:27,701 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:27,701 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:27,701 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:29,704 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:29,704 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:29,704 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:31,708 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:31,709 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:31,709 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:32,233 - app.utils - INFO - Checking status for job_id: c8767fc9-2cff-4671-b1ef-9f18a961857c
+2025-07-23 02:38:32,233 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:32,233 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:33,705 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:33,706 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:33,706 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:35,699 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:35,699 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:35,699 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:37,706 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:37,707 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:37,707 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:39,701 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:39,701 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:39,701 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:41,696 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:41,696 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:41,696 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:43,703 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:43,703 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:43,703 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:45,699 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:45,700 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:45,700 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:47,709 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:47,709 - app.utils - INFO - Active jobs: ['90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
+2025-07-23 02:38:47,709 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c']
+2025-07-23 02:38:47,744 - app.utils - INFO - Job 90821545-bd2a-44fd-b21e-3ed7bffa4ffc: Converting to PDF
+2025-07-23 02:38:47,744 - app.utils - INFO - Converting PPTX to PDF: outputs\90821545-bd2a-44fd-b21e-3ed7bffa4ffc_my-presentation.pptx -> outputs\90821545-bd2a-44fd-b21e-3ed7bffa4ffc_my-presentation.pdf
+2025-07-23 02:38:47,745 - app.utils - ERROR - PDF conversion failed: PDF conversion error: PowerPoint automation failed: [WinError -2147221005] Invalid class string
+2025-07-23 02:38:47,745 - app.utils - WARNING - Falling back to PPTX format
+2025-07-23 02:38:47,745 - app.utils - INFO - Job 90821545-bd2a-44fd-b21e-3ed7bffa4ffc: Completed successfully
+2025-07-23 02:38:49,702 - app.utils - INFO - Checking status for job_id: 90821545-bd2a-44fd-b21e-3ed7bffa4ffc
+2025-07-23 02:38:49,702 - app.utils - INFO - Active jobs: []
+2025-07-23 02:38:49,702 - app.utils - INFO - Completed jobs: ['6692e211-219c-48d7-8bfb-3da9d9fe7092', '9cbcfe7f-1181-4b39-ab67-425a6a021046', '18fc2796-07d3-4430-8006-5671d2c5ccbd', '3dbe57c1-47d9-4672-94b4-1d1a5f85253c', '0e3e9b8b-7bbc-40f1-bbed-dbf4722b007c', 'c8767fc9-2cff-4671-b1ef-9f18a961857c', '90821545-bd2a-44fd-b21e-3ed7bffa4ffc']
