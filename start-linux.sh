@@ -40,7 +40,7 @@ fi
 
 echo
 echo "🔧 Starting Production Server (Waitress WSGI)"
-echo "🌐 http://localhost:5001"
+echo "🌐 http://localhost:5002"
 echo
 
 $PYTHON_CMD run.py

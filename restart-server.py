@@ -11,7 +11,7 @@ import requests
 def check_server_status():
     """Check if server is running"""
     try:
-        response = requests.get("http://localhost:5001/api/health", timeout=5)
+        response = requests.get("http://localhost:5002/api/health", timeout=5)
         return response.status_code == 200
     except:
         return False

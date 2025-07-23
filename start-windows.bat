@@ -33,6 +33,6 @@ pip install -q -r requirements.txt
 
 echo.
 echo 🔧 Starting Production Server (Waitress WSGI)
-echo 🌐 http://localhost:5001
+echo 🌐 http://localhost:5002
 echo.
 python run.py

@@ -11,7 +11,7 @@ if __name__ == "__main__":
     # Get configuration from environment variables
     debug = os.getenv('DEBUG', 'False').lower() == 'true'
     host = os.getenv('HOST', '0.0.0.0')
-    port = int(os.getenv('PORT', 5001))
+    port = int(os.getenv('PORT', 5002))
     
     # Use Waitress for production, Flask dev server for development
     if debug:

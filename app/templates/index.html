@@ -3,8 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI PowerPoint Generator</title>
+    <title>SmartSlide - AI Presentation Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            --primary-bg: #0A0A0A;
+            --secondary-bg: #1A1A1A;
+            --card-bg: #1F1F1F;
+            --border-color: #333333;
+            --accent-blue: #3B82F6;
+            --accent-purple: #8B5CF6;
+            --accent-green: #10B981;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A1A1AA;
+            --text-muted: #71717A;
+            --gradient-primary: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-elevated: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,624 +30,1076 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            line-height: 1.6;
         }
 
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            max-width: 600px;
-            width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
         }
 
         .header h1 {
-            color: #333;
-            font-size: 2.5rem;
+            font-size: 3.5rem;
             font-weight: 700;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
         }
 
         .header p {
-            color: #666;
-            font-size: 1.1rem;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            box-shadow: var(--shadow-card);
+        }
+
+        .status-indicator.ready {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s ease;
+        }
+
+        .section-card:hover {
+            box-shadow: var(--shadow-elevated);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.5rem;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.125rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .help-tooltip {
+            color: var(--text-muted);
+            cursor: help;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+        }
+
+        .help-tooltip:hover {
+            color: var(--accent-blue);
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 1.5rem;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
             font-weight: 600;
-            color: #333;
-            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
         }
 
-        .upload-area {
-            border: 2px dashed #667eea;
-            border-radius: 12px;
-            padding: 30px;
+        .form-label.disabled {
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 1rem;
+            padding: 3rem 2rem;
             text-align: center;
-            background: rgba(102, 126, 234, 0.05);
+            background: var(--secondary-bg);
             transition: all 0.3s ease;
             cursor: pointer;
-            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .upload-area:hover {
-            border-color: #764ba2;
-            background: rgba(118, 75, 162, 0.05);
+        .upload-zone:hover,
+        .upload-zone.dragover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.05);
             transform: translateY(-2px);
-        }
-
-        .upload-area.dragover {
-            border-color: #764ba2;
-            background: rgba(118, 75, 162, 0.1);
         }
 
         .upload-icon {
             font-size: 3rem;
-            color: #667eea;
-            margin-bottom: 15px;
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
         }
 
         .upload-text {
-            color: #666;
-            font-size: 1rem;
-            margin-bottom: 10px;
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-subtext {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .supported-formats {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
 
         .file-input {
             display: none;
         }
 
-        .divider {
-            text-align: center;
-            margin: 25px 0;
-            position: relative;
-            color: #888;
-            font-weight: 500;
+        .selected-file {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--accent-blue);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            display: none;
         }
 
-        .divider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #ddd, transparent);
-        }
-
-        .divider span {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 0 20px;
-        }
-
-        .input-field, .select-field, .textarea-field {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .input-field:focus, .select-field:focus, .textarea-field:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .textarea-field {
-            min-height: 80px;
-            resize: vertical;
-        }
-
-        .theme-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
-        }
-
-        .radio-group {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .radio-option {
+        .file-details {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .file-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .file-name {
+            color: var(--accent-blue);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .file-size {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        .remove-file {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #EF4444;
+            color: #EF4444;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.5rem;
             cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            border: 2px solid #e1e5e9;
-            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
         }
 
-        .radio-option:hover {
-            background: rgba(102, 126, 234, 0.05);
-            border-color: #667eea;
+        .remove-file:hover {
+            background: #EF4444;
+            color: white;
         }
 
-        .radio-option input[type="radio"] {
-            margin-right: 8px;
-            accent-color: #667eea;
-        }
-
-        .radio-option input[type="radio"]:checked + span {
-            color: #667eea;
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.875rem;
             font-weight: 600;
         }
 
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .textarea-field {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            background: var(--secondary-bg);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            min-height: 120px;
+            resize: vertical;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .textarea-field:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .textarea-field::placeholder {
+            color: var(--text-muted);
+        }
+
+        .textarea-field:disabled {
+            background-color: rgba(113, 113, 122, 0.1) !important;
+            color: var(--text-muted) !important;
+            border-color: rgba(113, 113, 122, 0.2) !important;
+            cursor: not-allowed !important;
+            opacity: 0.6;
+        }
+
+        .textarea-field:disabled::placeholder {
+            color: rgba(113, 113, 122, 0.5) !important;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .option-card {
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .option-card.active {
+            background: var(--gradient-primary);
+            border-color: transparent;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .option-card input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .option-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .option-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
         .slider-container {
-            margin-top: 10px;
+            margin-top: 1rem;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            margin: 1rem 0;
         }
 
         .slider {
             width: 100%;
             height: 6px;
             border-radius: 3px;
-            background: #e1e5e9;
+            background: var(--border-color);
             outline: none;
             appearance: none;
+            cursor: pointer;
         }
 
         .slider::-webkit-slider-thumb {
             appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            background: #667eea;
+            background: var(--gradient-primary);
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
         }
 
         .slider::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            background: #667eea;
+            background: var(--gradient-primary);
             cursor: pointer;
             border: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
         }
 
         .slider-value {
             text-align: center;
-            margin-top: 8px;
+            color: var(--accent-blue);
             font-weight: 600;
-            color: #667eea;
+            font-size: 1.125rem;
+            margin-top: 0.5rem;
+        }
+
+        .generate-section {
+            margin-top: 2rem;
+            text-align: center;
         }
 
         .generate-btn {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: var(--gradient-primary);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            font-size: 1.125rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 30px;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            min-height: 60px;
         }
 
         .generate-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: var(--shadow-elevated);
         }
 
         .generate-btn:active {
             transform: translateY(0);
         }
 
-        .selected-file {
-            background: rgba(102, 126, 234, 0.1);
-            border: 2px solid #667eea;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
+        .generate-btn:disabled {
+            background: var(--border-color);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .generate-btn .loading-spinner {
             display: none;
-        }
-
-        .file-info {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .file-name {
-            color: #667eea;
-            font-weight: 600;
-        }
-
-        .remove-file {
-            background: none;
-            border: none;
-            color: #999;
-            cursor: pointer;
-            font-size: 1.2rem;
-            padding: 5px;
-        }
-
-        .remove-file:hover {
-            color: #e74c3c;
-        }
-
-        .flowchart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .add-flowchart-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 16px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .add-flowchart-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        }
-
-        .flowchart-item {
-            background: rgba(102, 126, 234, 0.05);
-            border: 2px solid #e1e5e9;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .flowchart-item:hover {
-            border-color: #667eea;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
-        }
-
-        .flowchart-item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .flowchart-number {
-            background: #667eea;
-            color: white;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        .generate-btn.loading .loading-spinner {
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .preview-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: 600;
+            gap: 0.5rem;
         }
 
-        .remove-flowchart-btn {
-            background: #e74c3c;
+        .settings-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .setting-value {
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .tips-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-card);
+        }
+
+        .tips-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 0.5rem;
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .tip-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .tip-icon {
+            color: var(--accent-blue);
+            margin-top: 0.125rem;
+        }
+
+        .tip-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        /* Mobile floating button */
+        .floating-generate-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--gradient-primary);
             color: white;
             border: none;
-            border-radius: 6px;
-            padding: 6px 10px;
-            font-size: 0.8rem;
+            border-radius: 50px;
+            padding: 15px 25px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: var(--shadow-elevated);
+            min-width: auto;
+            width: auto;
+            height: auto;
+            min-height: auto;
         }
 
-        .remove-flowchart-btn:hover {
-            background: #c0392b;
-            transform: translateY(-1px);
+        .floating-generate-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -3px rgba(59, 130, 246, 0.3);
         }
 
-        .flowchart-fields {
-            display: grid;
-            gap: 15px;
+        .floating-generate-btn:active {
+            transform: translateY(0) scale(1);
         }
 
-        .flowchart-title-input {
-            width: 100%;
-            padding: 10px 14px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            background: white;
+        .floating-generate-btn .loading-spinner {
+            display: none;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
         }
 
-        .flowchart-title-input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        .floating-generate-btn.loading .loading-spinner {
+            display: inline-block;
         }
 
-        .flowchart-content-textarea {
-            width: 100%;
-            padding: 12px 14px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            min-height: 100px;
-            resize: vertical;
-            transition: all 0.3s ease;
-            background: white;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-        }
-
-        .flowchart-content-textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .sidebar {
+                position: static;
+                order: -1;
+            }
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 25px;
-                margin: 10px;
+            .main-container {
+                padding: 1rem;
+                padding-bottom: 100px; /* Add bottom padding to avoid overlap with floating button */
             }
             
             .header h1 {
-                font-size: 2rem;
+                font-size: 2.5rem;
             }
             
-            .radio-group {
-                flex-direction: column;
+            .section-card {
+                padding: 1.5rem;
+            }
+            
+            .option-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            /* Hide sidebar generate button and show floating button on mobile */
+            .tips-card .generate-btn {
+                display: none;
+            }
+
+            .floating-generate-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            /* Hide settings preview and pro tips on mobile */
+            .preview-card,
+            .tips-card {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="main-container">
+        <!-- Header Section -->
         <div class="header">
-            <h1>AI PowerPoint Generator</h1>
-            <p>Create stunning presentations in seconds</p>
-            <div id="apiStatus" style="margin-top: 10px; font-size: 0.9rem; color: #666;">
-                <span id="statusIndicator">🔄</span> <span id="statusText">Checking API status...</span>
+            <h1>SmartSlide</h1>
+            <p>Effortless slide creation, powered by intelligence.</p>
+            <div class="status-indicator" id="apiStatus">
+                <i class="fas fa-circle-notch fa-spin" id="statusIcon"></i>
+                <span id="statusText">Checking API...</span>
             </div>
         </div>
 
-        <form id="pptForm">
-            <!-- Upload Document Section -->
-            <div class="form-group">
-                <label>Upload Document</label>
-                <div class="upload-area" id="uploadArea">
-                    <div class="upload-icon">📄</div>
-                    <div class="upload-text">Drag and drop your document here</div>
-                    <div style="color: #999; font-size: 0.9rem;">or click to browse files</div>
-                    <input type="file" class="file-input" id="fileInput" accept=".pdf,.doc,.docx,.txt">
-                </div>
-                <div class="selected-file" id="selectedFile">
-                    <div class="file-info">
-                        <span class="file-name" id="uploadedFileName"></span>
-                        <button type="button" class="remove-file" id="removeFile">✕</button>
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Form Container -->
+            <div class="form-container">
+                <form id="pptForm">
+                    <!-- Input Source Section -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <i class="fas fa-upload"></i>
+                            </div>
+                            <div>
+                                <h2 class="section-title">Input Source</h2>
+                            </div>
+                        </div>
+
+                        <!-- Upload Document -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-file-upload"></i>
+                                Upload Document
+                                <i class="fas fa-info-circle help-tooltip" title="Upload PDF, DOCX, or TXT files with text content"></i>
+                            </label>
+                            <div class="upload-zone" id="uploadArea">
+                                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                <div class="upload-text">Drag and drop your document here</div>
+                                <div class="upload-subtext">or click to browse files</div>
+                                <div class="supported-formats">
+                                    <i class="fas fa-file-alt"></i>
+                                    PDF • DOCX • TXT
+                                </div>
+                                <input type="file" class="file-input" id="fileInput" accept=".pdf,.docx,.doc,.txt">
+                            </div>
+                            <div class="selected-file" id="selectedFile">
+                                <div class="file-details">
+                                    <div class="file-info">
+                                        <div class="file-name" id="uploadedFileName"></div>
+                                        <div class="file-size" id="fileSize"></div>
+                                    </div>
+                                    <button type="button" class="remove-file" id="removeFile">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="file-preview" id="filePreview">
+                                    <div class="preview-header">Document Preview:</div>
+                                    <div class="preview-content" id="previewContent"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="divider">OR</div>
+
+                        <!-- Manual Topic Input -->
+                        <div class="form-group">
+                            <label for="topic" class="form-label">
+                                <i class="fas fa-lightbulb"></i>
+                                Enter Topic
+                                <i class="fas fa-info-circle help-tooltip" title="Describe your presentation topic or key points"></i>
+                            </label>
+                            <textarea 
+                                class="textarea-field" 
+                                id="topic" 
+                                placeholder="Enter your presentation topic or key points..."
+                            ></textarea>
+                        </div>
+
+                        <!-- Presentation Settings -->
+                        <div class="section-header" style="margin-top: 3rem;">
+                            <div class="section-icon">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <div>
+                                <h2 class="section-title">Presentation Settings</h2>
+                            </div>
+                        </div>
+
+                        <!-- Theme Selection -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-paint-brush"></i>
+                                Theme
+                                <i class="fas fa-info-circle help-tooltip" title="Choose a visual style that matches your content"></i>
+                            </label>
+                            <div class="option-grid">
+                                <label class="option-card active">
+                                    <input type="radio" name="theme" value="corporate" checked>
+                                    <i class="fas fa-briefcase option-icon"></i>
+                                    <div class="option-label">Corporate</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="theme" value="creative">
+                                    <i class="fas fa-lightbulb option-icon"></i>
+                                    <div class="option-label">Creative</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="theme" value="academic">
+                                    <i class="fas fa-graduation-cap option-icon"></i>
+                                    <div class="option-label">Academic</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="theme" value="health">
+                                    <i class="fas fa-heartbeat option-icon"></i>
+                                    <div class="option-label">Health</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="theme" value="technology">
+                                    <i class="fas fa-microchip option-icon"></i>
+                                    <div class="option-label">Technology</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="theme" value="environment">
+                                    <i class="fas fa-leaf option-icon"></i>
+                                    <div class="option-label">Environment</div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Tone Selection -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-volume-up"></i>
+                                Tone
+                                <i class="fas fa-info-circle help-tooltip" title="Set the communication style and mood"></i>
+                            </label>
+                            <div class="option-grid">
+                                <label class="option-card active">
+                                    <input type="radio" name="tone" value="professional" checked>
+                                    <i class="fas fa-user-tie option-icon"></i>
+                                    <div class="option-label">Professional</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="tone" value="friendly">
+                                    <i class="fas fa-smile option-icon"></i>
+                                    <div class="option-label">Friendly</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="tone" value="urgent">
+                                    <i class="fas fa-exclamation-triangle option-icon"></i>
+                                    <div class="option-label">Urgent</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="tone" value="academic">
+                                    <i class="fas fa-book option-icon"></i>
+                                    <div class="option-label">Academic</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="tone" value="casual">
+                                    <i class="fas fa-coffee option-icon"></i>
+                                    <div class="option-label">Casual</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="tone" value="inspiring">
+                                    <i class="fas fa-star option-icon"></i>
+                                    <div class="option-label">Inspiring</div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Text Size -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-text-height"></i>
+                                Text Size
+                                <i class="fas fa-info-circle help-tooltip" title="Choose readability level for your audience"></i>
+                            </label>
+                            <div class="option-grid">
+                                <label class="option-card">
+                                    <input type="radio" name="textSize" value="small">
+                                    <i class="fas fa-font option-icon" style="font-size: 1rem;"></i>
+                                    <div class="option-label">Small</div>
+                                </label>
+                                <label class="option-card active">
+                                    <input type="radio" name="textSize" value="medium" checked>
+                                    <i class="fas fa-font option-icon" style="font-size: 1.25rem;"></i>
+                                    <div class="option-label">Medium</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="textSize" value="large">
+                                    <i class="fas fa-font option-icon" style="font-size: 1.5rem;"></i>
+                                    <div class="option-label">Large</div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Target Audience -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-users"></i>
+                                Target Audience
+                                <i class="fas fa-info-circle help-tooltip" title="Tailor content complexity and style"></i>
+                            </label>
+                            <div class="option-grid">
+                                <label class="option-card active">
+                                    <input type="radio" name="audience" value="general public" checked>
+                                    <i class="fas fa-users option-icon"></i>
+                                    <div class="option-label">General Public</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="audience" value="technical professionals">
+                                    <i class="fas fa-cogs option-icon"></i>
+                                    <div class="option-label">Technical Pros</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="audience" value="students">
+                                    <i class="fas fa-user-graduate option-icon"></i>
+                                    <div class="option-label">Students</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="audience" value="executives">
+                                    <i class="fas fa-crown option-icon"></i>
+                                    <div class="option-label">Executives</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="audience" value="policymakers">
+                                    <i class="fas fa-balance-scale option-icon"></i>
+                                    <div class="option-label">Policymakers</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="audience" value="researchers">
+                                    <i class="fas fa-microscope option-icon"></i>
+                                    <div class="option-label">Researchers</div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Output Settings -->
+                        <div class="section-header" style="margin-top: 3rem;">
+                            <div class="section-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <div>
+                                <h2 class="section-title">Output Settings</h2>
+                            </div>
+                        </div>
+
+                        <!-- Number of Slides -->
+                        <div class="form-group" id="slidesGroup">
+                            <label class="form-label">
+                                <i class="fas fa-clone"></i>
+                                Number of Slides: <span class="slider-value" id="slideValue">10</span>
+                            </label>
+                            <div class="slider-container">
+                                <input type="range" class="slider" id="slides" min="3" max="20" value="10">
+                                <div class="slider-value" style="text-align: center; color: var(--accent-blue); font-weight: 600; font-size: 1.125rem; margin-top: 0.5rem;" id="slideValueDisplay">10</div>
+                            </div>
+                        </div>
+
+                        <!-- Add Flowchart -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-project-diagram"></i>
+                                Add Flowchart?
+                                <i class="fas fa-info-circle help-tooltip" title="Include visual process diagrams"></i>
+                            </label>
+                            <div class="option-grid" style="grid-template-columns: 1fr 1fr;">
+                                <label class="option-card active">
+                                    <input type="radio" name="flowchart" value="no" checked>
+                                    <i class="fas fa-times option-icon"></i>
+                                    <div class="option-label">No</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="flowchart" value="yes">
+                                    <i class="fas fa-check option-icon"></i>
+                                    <div class="option-label">Yes</div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- File Format -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-file-export"></i>
+                                File Format
+                                <i class="fas fa-info-circle help-tooltip" title="Choose output format for your presentation"></i>
+                            </label>
+                            <div class="option-grid" style="grid-template-columns: 1fr 1fr;">
+                                <label class="option-card active">
+                                    <input type="radio" name="fileFormat" value="pptx" checked>
+                                    <i class="fas fa-file-powerpoint option-icon"></i>
+                                    <div class="option-label">PowerPoint</div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="fileFormat" value="pdf">
+                                    <i class="fas fa-file-pdf option-icon"></i>
+                                    <div class="option-label">PDF</div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- File Name -->
+                        <div class="form-group">
+                            <label for="fileName" class="form-label">
+                                <i class="fas fa-signature"></i>
+                                File Name
+                            </label>
+                            <input 
+                                type="text" 
+                                class="textarea-field" 
+                                id="fileName" 
+                                placeholder="Enter file name (without extension)" 
+                                value="my-presentation"
+                                style="min-height: auto; padding: 0.75rem;"
+                            >
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Flowchart Section (Hidden by default) -->
+                <div class="section-card" id="flowchartGroup" style="display: none;">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <div>
+                            <h2 class="section-title">Flowcharts</h2>
+                        </div>
+                        <button type="button" class="debug-btn enable" id="addFlowchartBtn">
+                            <i class="fas fa-plus"></i> Add Flowchart
+                        </button>
+                    </div>
+                    <div id="flowchartsContainer">
+                        <!-- Flowcharts will be added here dynamically -->
                     </div>
                 </div>
             </div>
 
-            <div class="divider">
-                <span>OR</span>
-            </div>
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Settings Preview -->
+                <div class="preview-card">
+                    <div class="preview-title">
+                        <i class="fas fa-eye"></i>
+                        Settings Preview
+                    </div>
+                    <div class="settings-summary" id="settingsSummary">
+                        <div class="setting-item">
+                            <span class="setting-label">Theme</span>
+                            <span class="setting-value" id="previewTheme">Corporate</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Tone</span>
+                            <span class="setting-value" id="previewTone">Professional</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Text Size</span>
+                            <span class="setting-value" id="previewTextSize">Medium</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Audience</span>
+                            <span class="setting-value" id="previewAudience">General Public</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Slides</span>
+                            <span class="setting-value" id="previewSlides">10</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Format</span>
+                            <span class="setting-value" id="previewFormat">PowerPoint</span>
+                        </div>
+                    </div>
+                </div>
 
-            <!-- Enter Topic Section -->
-            <div class="form-group">
-                <label for="topic">Enter Topic</label>
-                <textarea class="textarea-field" id="topic" placeholder="Enter your presentation topic or key points..."></textarea>
-            </div>
-
-            <!-- Theme Selection -->
-            <div class="form-group">
-                <label>Theme</label>
-                <div class="radio-group theme-grid">
-                    <label class="radio-option">
-                        <input type="radio" name="theme" value="corporate" checked>
-                        <span>Corporate</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="theme" value="creative">
-                        <span>Creative</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="theme" value="academic">
-                        <span>Academic</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="theme" value="health">
-                        <span>Health</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="theme" value="technology">
-                        <span>Technology</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="theme" value="environment">
-                        <span>Environment</span>
-                    </label>
+                <!-- Tips -->
+                <div class="tips-card">
+                    <div class="tips-title">
+                        <i class="fas fa-lightbulb"></i>
+                        Pro Tips
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-check-circle tip-icon"></i>
+                        <div class="tip-text">Upload text-based documents for best results. Scanned PDFs won't work.</div>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-users tip-icon"></i>
+                        <div class="tip-text">Choose your audience carefully - it affects content complexity and style.</div>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-palette tip-icon"></i>
+                        <div class="tip-text">Theme and tone work together to create the right atmosphere for your presentation.</div>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-clock tip-icon"></i>
+                        <div class="tip-text">Generation typically takes 30-60 seconds depending on content length.</div>
+                    </div>
+                    
+                    <!-- Generate Button integrated into tips card -->
+                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                        <button type="submit" class="generate-btn" id="generateBtn" form="pptForm">
+                            <span class="loading-spinner"></span>
+                            <i class="fas fa-magic"></i>
+                            Generate Presentation
+                        </button>
+                    </div>
                 </div>
             </div>
-
-            <!-- Tone Selection -->
-            <div class="form-group">
-                <label>Tone</label>
-                <div class="radio-group">
-                    <label class="radio-option">
-                        <input type="radio" name="tone" value="professional" checked>
-                        <span>Professional</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="tone" value="friendly">
-                        <span>Friendly</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="tone" value="urgent">
-                        <span>Urgent</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="tone" value="academic">
-                        <span>Academic</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="tone" value="casual">
-                        <span>Casual</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="tone" value="inspiring">
-                        <span>Inspiring</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Text Size Selection -->
-            <div class="form-group">
-                <label>Text Size</label>
-                <div class="radio-group">
-                    <label class="radio-option">
-                        <input type="radio" name="textSize" value="small">
-                        <span>Small</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="textSize" value="medium" checked>
-                        <span>Medium</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="textSize" value="large">
-                        <span>Large</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Audience Input -->
-            <div class="form-group">
-                <label>Target Audience</label>
-                <div class="radio-group">
-                    <label class="radio-option">
-                        <input type="radio" name="audience" value="general public" checked>
-                        <span>General Public</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="audience" value="technical professionals">
-                        <span>Technical Professionals</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="audience" value="students">
-                        <span>Students</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="audience" value="executives">
-                        <span>Executives</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="audience" value="policymakers">
-                        <span>Policymakers</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="audience" value="researchers">
-                        <span>Researchers</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Number of Slides (conditional) -->
-            <div class="form-group" id="slidesGroup" style="display: none;">
-                <label for="slides">Number of Slides: <span id="slideValue">10</span></label>
-                <div class="slider-container">
-                    <input type="range" class="slider" id="slides" min="3" max="20" value="10">
-                </div>
-            </div>
-
-            <!-- Flowchart Option -->
-            <div class="form-group">
-                <label>Add Flowchart?</label>
-                <div class="radio-group">
-                    <label class="radio-option">
-                        <input type="radio" name="flowchart" value="no" checked>
-                        <span>No</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="flowchart" value="yes">
-                        <span>Yes</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Flowchart Input (conditional) -->
-            <div class="form-group" id="flowchartGroup" style="display: none;">
-                <div class="flowchart-header">
-                    <label>Flowcharts</label>
-                    <button type="button" class="add-flowchart-btn" id="addFlowchartBtn">
-                        <span>+</span> Add Flowchart
-                    </button>
-                </div>
-                
-                <div id="flowchartsContainer">
-                    <!-- Flowcharts will be added here dynamically -->
-                </div>
-            </div>
-
-            <!-- File Format Selection -->
-            <div class="form-group">
-                <label>File Format</label>
-                <div class="radio-group">
-                    <label class="radio-option">
-                        <input type="radio" name="fileFormat" value="pptx" checked>
-                        <span>PowerPoint (.pptx)</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="fileFormat" value="pdf">
-                        <span>PDF (.pdf)</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- File Name Input -->
-            <div class="form-group">
-                <label for="fileName">File Name</label>
-                <input type="text" class="input-field" id="fileName" placeholder="Enter file name (without extension)" value="my-presentation">
-            </div>
-
-            <!-- Generate Button -->
-            <button type="submit" class="generate-btn">
-                🎯 Generate PPT
-            </button>
-        </form>
+        </div>
     </div>
+
+    <!-- Floating Generate Button (Mobile Only) -->
+    <button type="submit" class="floating-generate-btn" id="floatingGenerateBtn" form="pptForm">
+        <span class="loading-spinner"></span>
+        <i class="fas fa-magic"></i>
+        Generate
+    </button>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -648,116 +1118,291 @@
             
             let flowchartCounter = 0;
 
-        uploadArea.addEventListener('click', () => fileInput.click());
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.classList.add('dragover');
-        });
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.classList.remove('dragover');
-        });
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                handleFileSelect(files[0]);
-            }
-        });
+            // File upload handlers
+            uploadArea.addEventListener('click', () => fileInput.click());
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFileSelect(files[0]);
+                }
+            });
 
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                handleFileSelect(e.target.files[0]);
-            }
-        });
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFileSelect(e.target.files[0]);
+                }
+            });
 
-        removeFile.addEventListener('click', () => {
-            fileInput.value = '';
-            selectedFile.style.display = 'none';
-            uploadArea.style.display = 'block';
-        });
+            removeFile.addEventListener('click', () => {
+                console.log('Removing file...'); // Debug log
+                
+                fileInput.value = '';
+                selectedFile.style.display = 'none';
+                uploadArea.style.display = 'block';
+                
+                // Clear stored file path and preview
+                delete uploadArea.dataset.uploadedFilePath;
+                document.getElementById('previewContent').textContent = '';
+                
+                // Re-enable topic input and restore normal styling
+                topicInput.disabled = false;
+                topicInput.value = ''; // Clear any placeholder text that might interfere
+                topicInput.placeholder = 'Enter your presentation topic or key points...';
+                
+                // Remove disabled class from label
+                const topicLabel = document.querySelector('label[for="topic"]');
+                topicLabel.classList.remove('disabled');
+                
+                console.log('Topic input re-enabled:', !topicInput.disabled); // Debug log
+                console.log('Label disabled class removed:', !topicLabel.classList.contains('disabled')); // Debug log
+            });
 
-        // Show/hide slides slider based on topic input
-        if (topicInput) {
+            // Show/hide slides slider based on topic input
             topicInput.addEventListener('input', () => {
-                if (topicInput.value && topicInput.value.trim()) {
-                    slidesGroup.style.display = 'block';
-                } else {
-                    slidesGroup.style.display = 'none';
-                }
+                updateSettingsPreview();
             });
-            
-            // Also check on page load in case there's already content
-            if (topicInput.value && topicInput.value.trim()) {
-                slidesGroup.style.display = 'block';
+
+            // Update settings preview in sidebar
+            function updateSettingsPreview() {
+                document.getElementById('previewTheme').textContent = 
+                    document.querySelector('input[name="theme"]:checked')?.value?.replace(/\b\w/g, l => l.toUpperCase()) || 'Corporate';
+                document.getElementById('previewTone').textContent = 
+                    document.querySelector('input[name="tone"]:checked')?.value?.replace(/\b\w/g, l => l.toUpperCase()) || 'Professional';
+                document.getElementById('previewTextSize').textContent = 
+                    document.querySelector('input[name="textSize"]:checked')?.value?.replace(/\b\w/g, l => l.toUpperCase()) || 'Medium';
+                document.getElementById('previewAudience').textContent = 
+                    document.querySelector('input[name="audience"]:checked')?.value?.replace(/\b\w/g, l => l.toUpperCase()) || 'General Public';
+                document.getElementById('previewSlides').textContent = 
+                    document.getElementById('slides').value || '10';
+                document.getElementById('previewFormat').textContent = 
+                    document.querySelector('input[name="fileFormat"]:checked')?.value === 'pptx' ? 'PowerPoint' : 'PDF';
             }
-        } else {
-            console.error('Topic input element not found!');
-        }
 
-        function handleFileSelect(file) {
-            uploadedFileName.textContent = file.name;
-            selectedFile.style.display = 'block';
-            uploadArea.style.display = 'none';
-        }
-
-        // Slider functionality
-        const slidesSlider = document.getElementById('slides');
-        const slideValue = document.getElementById('slideValue');
-
-        slidesSlider.addEventListener('input', () => {
-            slideValue.textContent = slidesSlider.value;
-        });
-
-        // Flowchart toggle functionality
-        flowchartRadios.forEach(radio => {
-            radio.addEventListener('change', () => {
-                if (radio.value === 'yes' && radio.checked) {
-                    flowchartGroup.style.display = 'block';
-                    // Add first flowchart if none exist
-                    if (flowchartsContainer.children.length === 0) {
-                        addFlowchart();
+            // Option card click handlers
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const radio = this.querySelector('input[type="radio"]');
+                    if (radio) {
+                        // Remove active class from siblings
+                        const group = this.closest('.option-grid');
+                        group.querySelectorAll('.option-card').forEach(c => c.classList.remove('active'));
+                        
+                        // Add active class to clicked card
+                        this.classList.add('active');
+                        radio.checked = true;
+                        
+                        // Handle flowchart toggle
+                        if (radio.name === 'flowchart') {
+                            if (radio.value === 'yes') {
+                                flowchartGroup.style.display = 'block';
+                                if (flowchartsContainer.children.length === 0) {
+                                    addFlowchart();
+                                }
+                            } else {
+                                flowchartGroup.style.display = 'none';
+                                flowchartsContainer.innerHTML = '';
+                                flowchartCounter = 0;
+                            }
+                        }
+                        
+                        updateSettingsPreview();
                     }
-                } else if (radio.value === 'no' && radio.checked) {
-                    flowchartGroup.style.display = 'none';
-                    // Clear all flowcharts
-                    flowchartsContainer.innerHTML = '';
-                    flowchartCounter = 0;
-                }
+                });
             });
-        });
 
-        // Add flowchart functionality
-        addFlowchartBtn.addEventListener('click', addFlowchart);
+            function handleFileSelect(file) {
+                console.log('File selected:', file.name); // Debug log
+                
+                // Show file details
+                uploadedFileName.textContent = file.name;
+                
+                // Format file size
+                const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+                document.getElementById('fileSize').textContent = `${sizeInMB} MB`;
+                
+                // Show selected file section and hide upload area
+                selectedFile.style.display = 'block';
+                uploadArea.style.display = 'none';
+                
+                // Disable topic input and gray out the section
+                console.log('Disabling topic input...'); // Debug log
+                topicInput.disabled = true;
+                topicInput.value = ''; // Clear any existing text
+                topicInput.placeholder = 'Document uploaded - content will be extracted from your file';
+                
+                // Add disabled class to label
+                const topicLabel = document.querySelector('label[for="topic"]');
+                topicLabel.classList.add('disabled');
+                console.log('Topic input disabled:', topicInput.disabled); // Debug log
+                console.log('Label has disabled class:', topicLabel.classList.contains('disabled')); // Debug log
+                
+                // Upload file and get preview
+                uploadFileForProcessing(file);
+            }
 
-        function addFlowchart() {
-            flowchartCounter++;
-            const flowchartItem = document.createElement('div');
-            flowchartItem.className = 'flowchart-item';
-            flowchartItem.setAttribute('data-flowchart-id', flowchartCounter);
-            
-            flowchartItem.innerHTML = `
-                <div class="flowchart-item-header">
-                    <div class="flowchart-number">${flowchartCounter}</div>
-                    <button type="button" class="remove-flowchart-btn" onclick="removeFlowchart(${flowchartCounter})">
-                        Remove
-                    </button>
-                </div>
-                <div class="flowchart-fields">
-                    <div>
-                        <label>Slide Title</label>
-                        <input type="text" class="flowchart-title-input" 
-                               placeholder="Enter slide title (e.g., 'Process Flow', 'Workflow Overview')" 
-                               value="Process Flow ${flowchartCounter}">
+            async function uploadFileForProcessing(file) {
+                try {
+                    const generateBtn = document.querySelector('.generate-btn');
+                    generateBtn.textContent = '📄 Processing document...';
+                    generateBtn.disabled = true;
+                    
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    
+                    const response = await fetch('/api/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Upload failed');
+                    }
+                    
+                    const result = await response.json();
+                    
+                    // Show preview content
+                    const previewContent = document.getElementById('previewContent');
+                    previewContent.textContent = result.content_preview || 'Content processed successfully';
+                    
+                    // Update predicted slides
+                    if (result.predicted_slides) {
+                        document.getElementById('slides').value = result.predicted_slides;
+                        document.getElementById('slideValue').textContent = result.predicted_slides;
+                        document.getElementById('slideValueDisplay').textContent = result.predicted_slides;
+                    }
+                    
+                    // Store file path for later use
+                    uploadArea.dataset.uploadedFilePath = result.filepath;
+                    
+                    generateBtn.textContent = '🎯 Generate Presentation';
+                    generateBtn.disabled = false;
+                    
+                } catch (error) {
+                    console.error('Upload error:', error);
+                    
+                    // Provide specific error message for common issues
+                    let errorMessage = error.message;
+                    if (errorMessage.includes('image-based PDF')) {
+                        errorMessage = `❌ PDF Upload Failed: This PDF contains only images without extractable text. Please try:\n• A text-based PDF document\n• A Word document (.docx)\n• A plain text file (.txt)`;
+                    } else if (errorMessage.includes('no extractable text')) {
+                        errorMessage = `❌ Document Processing Failed: No readable text found in this document. Please ensure your document contains text content.`;
+                    }
+                    
+                    alert(errorMessage);
+                    
+                    // Reset UI
+                    fileInput.value = '';
+                    selectedFile.style.display = 'none';
+                    uploadArea.style.display = 'block';
+                    
+                    // Re-enable topic input and restore normal styling
+                    console.log('Error occurred, re-enabling topic input...'); // Debug log
+                    topicInput.disabled = false;
+                    topicInput.value = ''; // Clear any content
+                    topicInput.placeholder = 'Enter your presentation topic or key points...';
+                    
+                    // Remove disabled class from label
+                    const topicLabel = document.querySelector('label[for="topic"]');
+                    topicLabel.classList.remove('disabled');
+                    
+                    const generateBtn = document.querySelector('.generate-btn');
+                    generateBtn.textContent = '🎯 Generate Presentation';
+                    generateBtn.disabled = false;
+                }
+            }
+
+            // Slider functionality
+            const slidesSlider = document.getElementById('slides');
+            const slideValue = document.getElementById('slideValue');
+            const slideValueDisplay = document.getElementById('slideValueDisplay');
+
+            console.log('Slider elements found:', {
+                slider: !!slidesSlider,
+                slideValue: !!slideValue,
+                slideValueDisplay: !!slideValueDisplay
+            });
+
+            if (slidesSlider) {
+                slidesSlider.addEventListener('input', () => {
+                    const value = slidesSlider.value;
+                    console.log('Slider value changed to:', value);
+                    
+                    if (slideValue) {
+                        slideValue.textContent = value;
+                        console.log('Updated slideValue element');
+                    }
+                    
+                    if (slideValueDisplay) {
+                        slideValueDisplay.textContent = value;
+                        console.log('Updated slideValueDisplay element');
+                    }
+                    
+                    updateSettingsPreview();
+                });
+            } else {
+                console.error('Slides slider element not found!');
+            }
+
+            // Add flowchart functionality
+            addFlowchartBtn.addEventListener('click', addFlowchart);
+
+            function addFlowchart() {
+                flowchartCounter++;
+                const flowchartItem = document.createElement('div');
+                flowchartItem.className = 'flowchart-item';
+                flowchartItem.style.cssText = `
+                    background: var(--secondary-bg);
+                    border: 1px solid var(--border-color);
+                    border-radius: 0.75rem;
+                    padding: 1.5rem;
+                    margin-bottom: 1rem;
+                `;
+                flowchartItem.setAttribute('data-flowchart-id', flowchartCounter);
+                
+                flowchartItem.innerHTML = `
+                    <div class="flowchart-item-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="background: var(--accent-blue); color: white; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600;" class="flowchart-number">${flowchartCounter}</div>
+                            <input type="text" 
+                                   class="flowchart-title-input" 
+                                   value="Process Flow ${flowchartCounter}" 
+                                   style="background: transparent; border: none; color: var(--text-primary); font-weight: 600; font-size: 1rem; padding: 0.25rem; border-radius: 0.25rem; border: 1px solid transparent;"
+                                   onfocus="this.style.borderColor='var(--accent-blue)'" 
+                                   onblur="this.style.borderColor='transparent'">
+                        </div>
+                        <button type="button" 
+                                onclick="removeFlowchart(${flowchartCounter})" 
+                                style="background: rgba(239, 68, 68, 0.1); border: 1px solid #EF4444; color: #EF4444; width: 2rem; height: 2rem; border-radius: 0.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;"
+                                onmouseover="this.style.background='#EF4444'; this.style.color='white'"
+                                onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.color='#EF4444'">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
-                    <div>
-                        <label>Flowchart Content</label>
-                        <textarea class="flowchart-content-textarea" 
-                                  placeholder="Enter your flowchart in simple format:
+                    <div class="form-group">
+                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">
+                            <i class="fas fa-project-diagram" style="margin-right: 0.5rem; color: var(--accent-blue);"></i>
+                            Flowchart Description
+                        </label>
+                        <textarea 
+                            name="flowchart_${flowchartCounter}" 
+                            class="textarea-field"
+                            style="min-height: 100px;"
+                            placeholder="Describe your flowchart or use simple syntax:
+
 Examples:
-• Simple format: A->B;B->C;C->D
-• Step format: Start->Process->Decision->End
-• With labels: Login->Verify->Success/Failure->Dashboard/Login
+- Simple format: A->B;B->C;C->D
+- Step format: Start->Process->Decision->End
+- With labels: Login->Verify->Success/Failure->Dashboard/Login
 
 Or use full Mermaid syntax:
 flowchart TD
@@ -765,260 +1410,224 @@ flowchart TD
     B --> C[Option A]
     B --> D[Option B]"></textarea>
                     </div>
-                </div>
-            `;
-            
-            flowchartsContainer.appendChild(flowchartItem);
-        }
-
-        function removeFlowchart(id) {
-            const flowchartItem = document.querySelector(`[data-flowchart-id="${id}"]`);
-            if (flowchartItem) {
-                flowchartItem.remove();
-                updateFlowchartNumbers();
-            }
-        }
-
-        function updateFlowchartNumbers() {
-            const flowchartItems = flowchartsContainer.querySelectorAll('.flowchart-item');
-            flowchartItems.forEach((item, index) => {
-                const numberElement = item.querySelector('.flowchart-number');
-                const titleInput = item.querySelector('.flowchart-title-input');
-                numberElement.textContent = index + 1;
+                `;
                 
-                // Update default title if it's still the default pattern
-                if (titleInput.value.match(/^Process Flow \d+$/)) {
-                    titleInput.value = `Process Flow ${index + 1}`;
+                flowchartsContainer.appendChild(flowchartItem);
+            }
+
+            function removeFlowchart(id) {
+                const flowchartItem = document.querySelector(`[data-flowchart-id="${id}"]`);
+                if (flowchartItem) {
+                    flowchartItem.remove();
+                    updateFlowchartNumbers();
                 }
-            });
-        }
+            }
 
-        // Make removeFlowchart function globally accessible
-        window.removeFlowchart = removeFlowchart;
+            function updateFlowchartNumbers() {
+                const flowchartItems = flowchartsContainer.querySelectorAll('.flowchart-item');
+                flowchartItems.forEach((item, index) => {
+                    const numberElement = item.querySelector('.flowchart-number');
+                    const titleInput = item.querySelector('.flowchart-title-input');
+                    numberElement.textContent = index + 1;
+                    
+                    if (titleInput.value.match(/^Process Flow \d+$/)) {
+                        titleInput.value = `Process Flow ${index + 1}`;
+                    }
+                });
+            }
 
-        // Form submission
-        const pptForm = document.getElementById('pptForm');
-        if (pptForm) {
+            // Make removeFlowchart function globally accessible
+            window.removeFlowchart = removeFlowchart;
+
+            // Initialize settings preview
+            updateSettingsPreview();
+
+            // Form submission
+            const pptForm = document.getElementById('pptForm');
             pptForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
                 const topic = document.getElementById('topic')?.value?.trim() || '';
-                const fileInput = document.getElementById('fileInput');
+                const uploadedFilePath = uploadArea.dataset.uploadedFilePath;
                 
-                // Validation
-                if (!fileInput?.files?.length && !topic) {
+                // Validation - check if we have either a document or topic (when topic is enabled)
+                if (!uploadedFilePath && !topic) {
                     alert('Please either upload a document or enter a topic.');
                     return;
                 }
             
-            // Show loading state
-            const generateBtn = document.querySelector('.generate-btn');
-            const originalText = generateBtn.textContent;
-            generateBtn.textContent = '🔄 Generating PPT...';
-            generateBtn.disabled = true;
-            
-            try {
-                let uploadedFilePath = null;
+                // Show loading state for both buttons
+                const generateBtn = document.querySelector('.generate-btn');
+                const floatingBtn = document.querySelector('.floating-generate-btn');
+                const originalText = generateBtn.textContent;
+                const originalFloatingText = floatingBtn.textContent;
                 
-                // Step 1: Upload file if provided
-                if (fileInput.files.length > 0) {
-                    const uploadFormData = new FormData();
-                    uploadFormData.append('file', fileInput.files[0]);
+                generateBtn.textContent = '🔄 Generating...';
+                generateBtn.disabled = true;
+                floatingBtn.textContent = '🔄 Generating...';
+                floatingBtn.disabled = true;
+                
+                try {
+                    // Prepare generation config
+                    const slidesElement = document.getElementById('slides');
+                    const numSlides = slidesElement && slidesElement.value ? parseInt(slidesElement.value) : 5;
                     
-                    const uploadResponse = await fetch('/api/upload', {
-                        method: 'POST',
-                        body: uploadFormData
-                    });
+                    const config = {
+                        topic: topic,
+                        num_slides: numSlides,
+                        theme: document.querySelector('input[name="theme"]:checked').value,
+                        tone: document.querySelector('input[name="tone"]:checked').value,
+                        text_size: document.querySelector('input[name="textSize"]:checked').value,
+                        audience: document.querySelector('input[name="audience"]:checked').value,
+                        filename: document.getElementById('fileName').value.trim() || 'my-presentation',
+                        file_format: document.querySelector('input[name="fileFormat"]:checked').value
+                    };
                     
-                    if (!uploadResponse.ok) {
-                        const errorData = await uploadResponse.json();
-                        throw new Error(errorData.error || 'File upload failed');
+                    // Add document file path if uploaded
+                    if (uploadedFilePath) {
+                        config.doc_filepath = uploadedFilePath;
                     }
                     
-                    const uploadResult = await uploadResponse.json();
-                    uploadedFilePath = uploadResult.filepath;
-                    
-                    // Update slides slider based on predicted slides
-                    if (uploadResult.predicted_slides) {
-                        document.getElementById('slides').value = uploadResult.predicted_slides;
-                        document.getElementById('slideValue').textContent = uploadResult.predicted_slides;
-                    }
-                }
-                
-                // Step 2: Prepare generation config
-                const slidesElement = document.getElementById('slides');
-                const numSlides = slidesElement && slidesElement.value ? parseInt(slidesElement.value) : 5;
-                
-                const config = {
-                    topic: topic,
-                    num_slides: numSlides,
-                    theme: document.querySelector('input[name="theme"]:checked').value,
-                    tone: document.querySelector('input[name="tone"]:checked').value,
-                    text_size: document.querySelector('input[name="textSize"]:checked').value,
-                    audience: document.querySelector('input[name="audience"]:checked').value,
-                    filename: document.getElementById('fileName').value.trim() || 'my-presentation',
-                    file_format: document.querySelector('input[name="fileFormat"]:checked').value
-                };
-                
-                // Add document file path if uploaded
-                if (uploadedFilePath) {
-                    config.doc_filepath = uploadedFilePath;
-                }
-                
-                // Add flowchart info if enabled
-                const flowchart = document.querySelector('input[name="flowchart"]:checked').value;
-                if (flowchart === 'yes') {
-                    const flowcharts = [];
-                    const flowchartItems = flowchartsContainer.querySelectorAll('.flowchart-item');
-                    
-                    flowchartItems.forEach((item, index) => {
-                        const titleInput = item.querySelector('.flowchart-title-input');
-                        const contentTextarea = item.querySelector('.flowchart-content-textarea');
+                    // Add flowchart info if enabled
+                    const flowchart = document.querySelector('input[name="flowchart"]:checked').value;
+                    if (flowchart === 'yes') {
+                        const flowcharts = [];
+                        const flowchartItems = flowchartsContainer.querySelectorAll('.flowchart-item');
                         
-                        const title = titleInput.value.trim() || `Process Flow ${index + 1}`;
-                        const content = contentTextarea.value.trim();
-                        
-                        if (content) {
-                            flowcharts.push({
-                                title: title,
-                                description: content
-                            });
-                        }
-                    });
-                    
-                    if (flowcharts.length > 0) {
-                        config.flowcharts = flowcharts;
-                    }
-                }
-                
-                // Step 3: Start generation
-                const generateResponse = await fetch('/api/generate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(config)
-                });
-                
-                if (!generateResponse.ok) {
-                    const errorData = await generateResponse.json();
-                    throw new Error(errorData.error || 'Generation failed');
-                }
-                
-                const generateResult = await generateResponse.json();
-                const jobId = generateResult.job_id;
-                
-                // Step 4: Poll for completion
-                generateBtn.textContent = '⏳ Processing...';
-                
-                const pollInterval = setInterval(async () => {
-                    try {
-                        const statusResponse = await fetch(`/api/status/${jobId}`);
-                        const status = await statusResponse.json();
-                        
-                        if (status.status === 'completed') {
-                            clearInterval(pollInterval);
+                        flowchartItems.forEach((item, index) => {
+                            const titleInput = item.querySelector('.flowchart-title-input');
+                            const contentTextarea = item.querySelector('.flowchart-content-textarea');
                             
-                            // Step 5: Download the file
-                            const downloadResponse = await fetch(`/api/download/${jobId}`);
-                            if (downloadResponse.ok) {
-                                const blob = await downloadResponse.blob();
-                                const url = window.URL.createObjectURL(blob);
-                                const a = document.createElement('a');
-                                a.style.display = 'none';
-                                a.href = url;
-                                const fileExtension = config.file_format === 'pdf' ? '.pdf' : '.pptx';
-                                a.download = `${config.filename}${fileExtension}`;
-                                document.body.appendChild(a);
-                                a.click();
-                                window.URL.revokeObjectURL(url);
-                                document.body.removeChild(a);
+                            const title = titleInput.value.trim() || `Process Flow ${index + 1}`;
+                            const content = contentTextarea.value.trim();
+                            
+                            if (content) {
+                                flowcharts.push({
+                                    title: title,
+                                    description: content
+                                });
+                            }
+                        });
+                        
+                        if (flowcharts.length > 0) {
+                            config.flowcharts = flowcharts;
+                        }
+                    }
+                    
+                    // Start generation
+                    const generateResponse = await fetch('/api/generate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(config)
+                    });
+                    
+                    if (!generateResponse.ok) {
+                        const errorData = await generateResponse.json();
+                        throw new Error(errorData.error || 'Generation failed');
+                    }
+                    
+                    const generateResult = await generateResponse.json();
+                    const jobId = generateResult.job_id;
+                    
+                    // Step 4: Poll for completion
+                    generateBtn.textContent = '⏳ Processing...';
+                    floatingBtn.textContent = '⏳ Processing...';
+                    
+                    const pollInterval = setInterval(async () => {
+                        try {
+                            const statusResponse = await fetch(`/api/status/${jobId}`);
+                            const status = await statusResponse.json();
+                            
+                            if (status.status === 'completed') {
+                                clearInterval(pollInterval);
                                 
-                                generateBtn.textContent = originalText;
-                                generateBtn.disabled = false;
-                                alert('✅ PPT generated successfully and downloaded!');
+                                // Step 5: Download the file
+                                const downloadResponse = await fetch(`/api/download/${jobId}`);
+                                if (downloadResponse.ok) {
+                                    const blob = await downloadResponse.blob();
+                                    const url = window.URL.createObjectURL(blob);
+                                    const a = document.createElement('a');
+                                    a.style.display = 'none';
+                                    a.href = url;
+                                    const fileExtension = config.file_format === 'pdf' ? '.pdf' : '.pptx';
+                                    a.download = `${config.filename}${fileExtension}`;
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    window.URL.revokeObjectURL(url);
+                                    document.body.removeChild(a);
+                                    
+                                    generateBtn.textContent = originalText;
+                                    generateBtn.disabled = false;
+                                    floatingBtn.textContent = originalFloatingText;
+                                    floatingBtn.disabled = false;
+                                    alert('✅ Presentation generated successfully and downloaded!');
+                                } else {
+                                    throw new Error('Download failed');
+                                }
+                                
+                            } else if (status.status === 'failed') {
+                                clearInterval(pollInterval);
+                                throw new Error(status.error || 'Generation failed');
+                                
                             } else {
-                                throw new Error('Download failed');
+                                // Update progress for both buttons
+                                const progress = status.progress || 0;
+                                const statusText = status.status || 'processing';
+                                const progressDisplayText = `🔄 ${statusText.charAt(0).toUpperCase() + statusText.slice(1).replace('_', ' ')} (${progress}%)`;
+                                generateBtn.textContent = progressDisplayText;
+                                floatingBtn.textContent = progressDisplayText;
                             }
                             
-                        } else if (status.status === 'failed') {
+                        } catch (pollError) {
                             clearInterval(pollInterval);
-                            throw new Error(status.error || 'Generation failed');
-                            
-                        } else {
-                            // Update progress
-                            const progress = status.progress || 0;
-                            const statusText = status.status || 'processing';
-                            generateBtn.textContent = `🔄 ${statusText.charAt(0).toUpperCase() + statusText.slice(1).replace('_', ' ')} (${progress}%)`;
+                            throw pollError;
                         }
-                        
-                    } catch (pollError) {
-                        clearInterval(pollInterval);
-                        throw pollError;
-                    }
-                }, 2000); // Poll every 2 seconds
-                
-            } catch (error) {
-                console.error('Error:', error);
-                alert(`❌ Error: ${error.message}`);
-                generateBtn.textContent = originalText;
-                generateBtn.disabled = false;
-            }
-            });
-        } else {
-            console.error('PPT form element not found!');
-        }
-
-        // Radio button styling updates
-        document.querySelectorAll('input[type="radio"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                // Update the selected state styling
-                this.closest('.radio-group').querySelectorAll('.radio-option').forEach(option => {
-                    option.style.background = option.querySelector('input').checked ? 
-                        'rgba(102, 126, 234, 0.1)' : 'white';
-                    option.style.borderColor = option.querySelector('input').checked ? 
-                        '#667eea' : '#e1e5e9';
-                });
-            });
-        });
-
-        // Initialize radio button states
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
-                radio.dispatchEvent(new Event('change'));
-            });
-            
-            // Check API status
-            checkApiStatus();
-        });
-        
-        // Check API status
-        async function checkApiStatus() {
-            try {
-                const response = await fetch('/api/health');
-                if (response.ok) {
-                    const data = await response.json();
-                    document.getElementById('statusIndicator').textContent = '✅';
-                    document.getElementById('statusText').textContent = 'API Ready';
-                    document.getElementById('apiStatus').style.color = '#4CAF50';
-                    console.log('API Status:', data);
-                } else {
-                    throw new Error(`API responded with status: ${response.status}`);
+                    }, 2000);
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert(`❌ Error: ${error.message}`);
+                    generateBtn.textContent = originalText;
+                    generateBtn.disabled = false;
+                    floatingBtn.textContent = originalFloatingText;
+                    floatingBtn.disabled = false;
                 }
-            } catch (error) {
-                console.error('API Health Check Error:', error);
-                document.getElementById('statusIndicator').textContent = '❌';
-                document.getElementById('statusText').textContent = 'API Unavailable';
-                document.getElementById('apiStatus').style.color = '#f44336';
+            });
+
+            // Add event listener for floating generate button
+            const floatingGenerateBtn = document.querySelector('.floating-generate-btn');
+            if (floatingGenerateBtn) {
+                floatingGenerateBtn.addEventListener('click', () => {
+                    // Trigger form submission
+                    pptForm.dispatchEvent(new Event('submit'));
+                });
             }
-        }
-        
-        // Initialize API health check when page loads (with small delay)
-        setTimeout(() => {
-            checkApiStatus();
-        }, 500);
-        
-        }); // End of DOMContentLoaded
+
+            // Check API status
+            async function checkApiStatus() {
+                try {
+                    const response = await fetch('/api/health');
+                    if (response.ok) {
+                        const data = await response.json();
+                        document.getElementById('statusIcon').className = 'fas fa-check-circle';
+                        document.getElementById('statusText').textContent = 'API Ready';
+                        document.getElementById('apiStatus').classList.add('ready');
+                    } else {
+                        throw new Error(`API responded with status: ${response.status}`);
+                    }
+                } catch (error) {
+                    console.error('API Health Check Error:', error);
+                    document.getElementById('statusIcon').className = 'fas fa-times-circle';
+                    document.getElementById('statusText').textContent = 'API Unavailable';
+                    document.getElementById('apiStatus').classList.remove('ready');
+                }
+            }
+            
+            // Initialize API health check
+            setTimeout(checkApiStatus, 500);
+        });
     </script>
 </body>
 </html>

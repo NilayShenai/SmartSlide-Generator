@@ -94,7 +94,7 @@ def upload_file():
         try:
             sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
             from ppt_maker_flo import predict_num_slides, ChatGoogleGenerativeAI
-            llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.0)
+            llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp", temperature=0.0)
             predicted_slides = predict_num_slides(doc_content, llm)
         except Exception as e:
             print(f"Could not predict slides: {e}")
@@ -138,6 +138,10 @@ def generate_presentation():
         if data.get('doc_filepath'):
             doc_content = read_document_content(data['doc_filepath'])
             config['doc_content'] = doc_content
+            print(f"Document content loaded: {len(doc_content)} characters")
+            print(f"Document filepath: {data['doc_filepath']}")
+        else:
+            print("No document filepath provided")
         
         active_jobs[job_id] = {
             'status': 'started',

@@ -41,11 +41,11 @@ class ProductionManager:
         print(f"   Status: {nginx_status}")
         
         print("\n🔌 Port Check:")
-        port_check = self.run_command("netstat -tlnp | grep :5001", check=False)
+        port_check = self.run_command("netstat -tlnp | grep :5002", check=False)
         if port_check:
-            print(f"   Port 5001: Active")
+            print(f"   Port 5002: Active")
         else:
-            print(f"   Port 5001: Not active")
+            print(f"   Port 5002: Not active")
         
         print("\n💾 Disk Usage:")
         disk_usage = self.run_command(f"du -sh {self.app_dir}")
@@ -128,7 +128,7 @@ class ProductionManager:
         
         try:
             import requests
-            response = requests.get("http://localhost:5001/api/health", timeout=10)
+            response = requests.get("http://localhost:5002/api/health", timeout=10)
             if response.status_code == 200:
                 data = response.json()
                 print("✅ Health check passed")

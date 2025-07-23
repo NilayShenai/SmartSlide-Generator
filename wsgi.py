@@ -97,6 +97,6 @@ application = app
 
 if __name__ == "__main__":
     # Development fallback
-    port = int(os.getenv('PORT', 5001))
+    port = int(os.getenv('PORT', 5002))
     host = os.getenv('HOST', '0.0.0.0')
     app.run(host=host, port=port, debug=False)

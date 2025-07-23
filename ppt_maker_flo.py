@@ -1023,7 +1023,7 @@ def main():
         # Initialize LLM
         print("🤖 Initializing AI model...")
         llm = ChatGoogleGenerativeAI(
-            model="gemini-1.5-pro",
+            model="gemini-2.0-flash-exp",
             temperature=0.0
         )
         

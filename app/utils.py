@@ -13,15 +13,16 @@ def convert_pptx_to_pdf(pptx_path: str, pdf_path: str):
     try:
         print(f"Starting PDF conversion: {pptx_path} -> {pdf_path}")
         
-        if platform.system() in ["Linux", "Darwin"]:
-            try:
-                success = convert_pptx_to_pdf_libreoffice(pptx_path, pdf_path)
-                if success:
-                    print("PDF conversion successful using LibreOffice")
-                    return True
-            except Exception as e:
-                print(f"LibreOffice method failed: {e}")
+        # Try LibreOffice first (cross-platform, no watermarks, free)
+        try:
+            success = convert_pptx_to_pdf_libreoffice_enhanced(pptx_path, pdf_path)
+            if success:
+                print("PDF conversion successful using LibreOffice")
+                return True
+        except Exception as e:
+            print(f"LibreOffice method failed: {e}")
         
+        # Fallback to ReportLab-based extraction
         try:
             success = convert_pptx_to_pdf_with_reportlab(pptx_path, pdf_path)
             if success:
@@ -30,15 +31,7 @@ def convert_pptx_to_pdf(pptx_path: str, pdf_path: str):
         except Exception as e:
             print(f"ReportLab method failed: {e}")
         
-        if platform.system() == "Windows":
-            try:
-                success = convert_pptx_to_pdf_com(pptx_path, pdf_path)
-                if success:
-                    print("PDF conversion successful using COM automation")
-                    return True
-            except Exception as e:
-                print(f"COM automation method failed: {e}")
-        
+        # Final fallback to simple text extraction
         try:
             success = convert_pptx_to_pdf_simple(pptx_path, pdf_path)
             if success:
@@ -53,6 +46,365 @@ def convert_pptx_to_pdf(pptx_path: str, pdf_path: str):
         print(f"PDF conversion error: {e}")
         raise
 
+def convert_pptx_to_pdf_libreoffice_enhanced(pptx_path: str, pdf_path: str):
+    """
+    Enhanced LibreOffice conversion with cross-platform support and improved reliability.
+    Works on Windows, macOS, and Linux without watermarks.
+    """
+    try:
+        import subprocess
+        import shutil
+        import tempfile
+        
+        print(f"Converting PPTX to PDF using LibreOffice: {pptx_path} -> {pdf_path}")
+        
+        # Verify input file exists
+        if not os.path.exists(pptx_path):
+            raise FileNotFoundError(f"Source PPTX file not found: {pptx_path}")
+        
+        # Cross-platform LibreOffice detection
+        libreoffice_cmd = detect_libreoffice_command()
+        if not libreoffice_cmd:
+            raise Exception("LibreOffice not found on system")
+        
+        # Verify LibreOffice is working
+        if not verify_libreoffice(libreoffice_cmd):
+            raise Exception("LibreOffice verification failed")
+        
+        # Create output directory if it doesn't exist
+        pdf_dir = os.path.dirname(pdf_path)
+        if pdf_dir:
+            os.makedirs(pdf_dir, exist_ok=True)
+        
+        # Get absolute paths for reliable conversion
+        pptx_abs_path = os.path.abspath(pptx_path)
+        pdf_abs_path = os.path.abspath(pdf_path)
+        
+        # Use temporary directory for conversion
+        with tempfile.TemporaryDirectory() as temp_dir:
+            # Ensure clean LibreOffice state
+            cleanup_libreoffice_processes()
+            
+            # Create automated LibreOffice profile to prevent first-run dialogs
+            profile_dir = os.path.join(temp_dir, 'libreoffice_profile')
+            create_automated_libreoffice_profile(profile_dir)
+            
+            # Build LibreOffice command
+            cmd = build_libreoffice_command(libreoffice_cmd, pptx_abs_path, temp_dir)
+            
+            print(f"Executing LibreOffice command: {' '.join(cmd)}")
+            
+            try:
+                # Update environment for temporary profile
+                libreoffice_env = get_libreoffice_env()
+                libreoffice_env['UserInstallation'] = f'file:///{profile_dir.replace(os.sep, "/")}'
+                
+                # Execute conversion with maximum automation and timeout
+                result = subprocess.run(
+                    cmd,
+                    text=True,
+                    timeout=180,                    # 3 minutes timeout
+                    cwd=temp_dir,
+                    stdin=subprocess.DEVNULL,       # Completely block interactive input
+                    stdout=subprocess.PIPE,         # Capture all output
+                    stderr=subprocess.PIPE,         # Capture all errors
+                    env=libreoffice_env,            # Use our automated environment
+                    shell=False,                    # Don't use shell for security
+                    creationflags=subprocess.CREATE_NO_WINDOW if platform.system() == "Windows" else 0  # Hide window on Windows
+                )
+                
+                if result.stdout:
+                    print(f"LibreOffice stdout: {result.stdout.strip()}")
+                if result.stderr and result.stderr.strip():
+                    print(f"LibreOffice stderr: {result.stderr.strip()}")
+                
+                if result.returncode == 0:
+                    # Find the generated PDF
+                    base_name = os.path.splitext(os.path.basename(pptx_abs_path))[0]
+                    generated_pdf = os.path.join(temp_dir, f"{base_name}.pdf")
+                    
+                    if os.path.exists(generated_pdf):
+                        # Move to final destination
+                        shutil.move(generated_pdf, pdf_abs_path)
+                        
+                        # Verify successful conversion
+                        if os.path.exists(pdf_abs_path) and os.path.getsize(pdf_abs_path) > 1000:
+                            file_size = os.path.getsize(pdf_abs_path)
+                            print(f"✅ PDF conversion successful! 📄 Output file: {pdf_abs_path} ({file_size} bytes)")
+                            return True
+                        else:
+                            print(f"❌ Generated PDF is too small or corrupt")
+                            return False
+                    else:
+                        print(f"❌ Generated PDF not found at: {generated_pdf}")
+                        # List files in temp directory for debugging
+                        try:
+                            temp_files = os.listdir(temp_dir)
+                            print(f"Files in temp directory: {temp_files}")
+                        except Exception:
+                            pass
+                        return False
+                else:
+                    print(f"❌ LibreOffice conversion failed with return code: {result.returncode}")
+                    return False
+                    
+            except subprocess.TimeoutExpired:
+                print("❌ LibreOffice conversion timed out after 3 minutes")
+                cleanup_libreoffice_processes()  # Clean up hanging processes
+                return False
+            except Exception as subprocess_error:
+                print(f"❌ Subprocess error: {subprocess_error}")
+                cleanup_libreoffice_processes()  # Clean up hanging processes
+                return False
+            finally:
+                # Always attempt cleanup after conversion
+                cleanup_libreoffice_processes()
+        
+    except Exception as e:
+        print(f"❌ LibreOffice conversion failed: {e}")
+        return False
+
+def detect_libreoffice_command():
+    """
+    Detect LibreOffice command across different platforms.
+    Enhanced for Linux VPS environments with multiple installation methods.
+    """
+    import shutil
+    
+    system = platform.system()
+    
+    # Platform-specific LibreOffice paths and commands
+    if system == "Darwin":  # macOS
+        possible_paths = [
+            "/Applications/LibreOffice.app/Contents/MacOS/soffice",
+            "/opt/homebrew/bin/soffice",
+            "/usr/local/bin/soffice"
+        ]
+        for path in possible_paths:
+            if os.path.exists(path):
+                print(f"🔍 Found LibreOffice on macOS: {path}")
+                return path
+        
+        # Try PATH lookup
+        for cmd in ['soffice', 'libreoffice']:
+            if shutil.which(cmd):
+                print(f"🔍 Found LibreOffice in PATH: {cmd}")
+                return cmd
+                
+    elif system == "Linux":
+        # Enhanced Linux VPS paths (apt, snap, flatpak, manual installs)
+        possible_paths = [
+            "/usr/bin/libreoffice",
+            "/usr/bin/soffice", 
+            "/usr/local/bin/libreoffice",
+            "/usr/local/bin/soffice",
+            "/opt/libreoffice/program/soffice",
+            "/snap/bin/libreoffice",  # Snap package
+            "/var/lib/flatpak/exports/bin/org.libreoffice.LibreOffice",  # System flatpak
+            os.path.expanduser("~/.local/share/flatpak/exports/bin/org.libreoffice.LibreOffice"),  # User flatpak
+        ]
+        
+        for path in possible_paths:
+            if os.path.exists(path):
+                print(f"🔍 Found LibreOffice on Linux VPS: {path}")
+                return path
+        
+        # Try PATH lookup with various command names (for different versions)
+        for cmd in ['libreoffice', 'soffice', 'libreoffice7.0', 'libreoffice6.4', 'libreoffice7.2', 'libreoffice7.4']:
+            if shutil.which(cmd):
+                print(f"🔍 Found LibreOffice in PATH: {cmd}")
+                return cmd
+                
+    elif system == "Windows":
+        # Windows-specific paths
+        possible_paths = [
+            r"C:\Program Files\LibreOffice\program\soffice.exe",
+            r"C:\Program Files (x86)\LibreOffice\program\soffice.exe",
+            r"C:\Program Files\LibreOffice 7\program\soffice.exe",
+            r"C:\Program Files (x86)\LibreOffice 7\program\soffice.exe",
+        ]
+        for path in possible_paths:
+            if os.path.exists(path):
+                print(f"🔍 Found LibreOffice on Windows: {path}")
+                return path
+        
+        # Try PATH lookup
+        for cmd in ['soffice', 'soffice.exe', 'libreoffice', 'libreoffice.exe']:
+            if shutil.which(cmd):
+                print(f"🔍 Found LibreOffice in PATH: {cmd}")
+                return cmd
+    
+    print("❌ LibreOffice not found on system")
+    if system == "Linux":
+        print("💡 For Linux VPS, install with: sudo apt update && sudo apt install libreoffice --no-install-recommends")
+    return None
+
+def verify_libreoffice(libreoffice_cmd):
+    """
+    Verify that LibreOffice is working properly.
+    """
+    try:
+        import subprocess
+        result = subprocess.run(
+            [libreoffice_cmd, '--version'],
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+        
+        if result.returncode == 0:
+            version_info = result.stdout.strip() if result.stdout else "LibreOffice (version check passed)"
+            print(f"✅ LibreOffice verified: {version_info}")
+            return True
+        else:
+            print(f"❌ LibreOffice verification failed: return code {result.returncode}")
+            if result.stderr:
+                print(f"Error output: {result.stderr.strip()}")
+            return False
+            
+    except Exception as e:
+        print(f"❌ LibreOffice verification error: {e}")
+        return False
+
+def build_libreoffice_command(libreoffice_cmd, input_file, output_dir):
+    """
+    Build LibreOffice command with proven automation parameters that work reliably.
+    Optimized for headless Linux VPS and local environments.
+    """
+    cmd = [
+        libreoffice_cmd,
+        '--headless',                    # No GUI - ESSENTIAL
+        '--invisible',                   # Hide splash screen
+        '--nolockcheck',                 # Don't check for lock files
+        '--nologo',                      # Don't show logo
+        '--norestore',                   # Don't restore windows
+        '--nofirststartwizard',          # Skip first start wizard
+        '--convert-to', 'pdf',           # Convert to PDF format
+        '--outdir', output_dir,          # Output directory
+        input_file                       # Input file
+    ]
+    
+    # Add Linux VPS-specific parameters for maximum compatibility
+    import platform
+    if platform.system() == "Linux":
+        cmd.insert(1, '--nodefault')     # Don't open default document
+        cmd.insert(2, '--nocrashreport') # Disable crash reporting
+        cmd.insert(3, '--disable-extension-update') # Disable extension updates
+    
+    return cmd
+
+def get_libreoffice_env():
+    """
+    Create a clean environment for LibreOffice with essential automation variables.
+    Optimized for headless Linux VPS environments.
+    """
+    import os
+    env = os.environ.copy()
+    
+    # Set essential environment variables for non-interactive operation
+    env.update({
+        'SAL_USE_VCLPLUGIN': 'svp',                  # Use Server Virtual Plugin (headless)
+        'SAL_NO_MOUSEGRABS': '1',                    # Prevent mouse grabs
+        'SAL_DISABLE_CRASHREPORT': '1',              # Disable crash reporting
+    })
+    
+    # Platform-specific essential settings
+    system = platform.system()
+    if system == "Linux":
+        # Enhanced Linux VPS support - headless server environment
+        env.update({
+            'DISPLAY': '',                           # No X11 display (headless)
+            'HOME': '/tmp/libreoffice_vps_home',     # Temporary home for VPS
+            'XDG_RUNTIME_DIR': '/tmp/xdg_runtime',   # XDG runtime directory
+            'TMPDIR': '/tmp',                        # Temp directory
+            'FONTCONFIG_PATH': '/etc/fonts',         # Font configuration
+            'QT_QPA_PLATFORM': 'offscreen',          # Qt offscreen platform
+            'GDK_BACKEND': 'x11',                    # GTK backend
+        })
+        
+        # Create necessary directories for VPS
+        try:
+            os.makedirs('/tmp/libreoffice_vps_home', exist_ok=True)
+            os.makedirs('/tmp/xdg_runtime', exist_ok=True)
+        except:
+            pass
+            
+    elif system == "Windows":
+        env.update({
+            'TEMP': env.get('TEMP', 'C:\\Temp'),
+            'TMP': env.get('TMP', 'C:\\Temp'),
+        })
+    
+    return env
+
+def cleanup_libreoffice_processes():
+    """
+    Clean up any hanging LibreOffice processes to prevent conflicts.
+    """
+    try:
+        import subprocess
+        system = platform.system()
+        
+        if system == "Windows":
+            # Kill LibreOffice processes on Windows
+            subprocess.run([
+                'taskkill', '/F', '/IM', 'soffice.exe'
+            ], capture_output=True, timeout=10)
+            subprocess.run([
+                'taskkill', '/F', '/IM', 'soffice.bin'
+            ], capture_output=True, timeout=10)
+        else:
+            # Kill LibreOffice processes on Linux/macOS
+            subprocess.run([
+                'pkill', '-f', 'soffice'
+            ], capture_output=True, timeout=10)
+            subprocess.run([
+                'pkill', '-f', 'libreoffice'
+            ], capture_output=True, timeout=10)
+            
+    except Exception as e:
+        # Process cleanup is best-effort, don't fail if it doesn't work
+        print(f"Process cleanup warning: {e}")
+        pass
+
+def create_automated_libreoffice_profile(profile_dir):
+    """
+    Create a pre-configured LibreOffice profile to prevent first-run dialogs.
+    """
+    try:
+        import os
+        
+        # Create profile directory structure
+        os.makedirs(profile_dir, exist_ok=True)
+        os.makedirs(os.path.join(profile_dir, 'user'), exist_ok=True)
+        os.makedirs(os.path.join(profile_dir, 'user', 'config'), exist_ok=True)
+        
+        # Create registrymodifications.xcu to skip first-run wizard
+        registry_config = '''<?xml version="1.0" encoding="UTF-8"?>
+<oor:items xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<item oor:path="/org.openoffice.Setup/Office">
+<prop oor:name="FirstStartWizardCompleted" oor:op="fuse">
+<value>true</value>
+</prop>
+</item>
+<item oor:path="/org.openoffice.Office.Common/Misc">
+<prop oor:name="FirstRun" oor:op="fuse">
+<value>false</value>
+</prop>
+</item>
+</oor:items>'''
+        
+        registry_path = os.path.join(profile_dir, 'user', 'registrymodifications.xcu')
+        with open(registry_path, 'w', encoding='utf-8') as f:
+            f.write(registry_config)
+            
+        print(f"✅ Created automated LibreOffice profile at: {profile_dir}")
+        return True
+        
+    except Exception as e:
+        print(f"⚠️ Warning: Could not create LibreOffice profile: {e}")
+        return False
+
 def convert_pptx_to_pdf_simple(pptx_path: str, pdf_path: str):
     try:
         from reportlab.pdfgen import canvas
@@ -65,7 +417,8 @@ def convert_pptx_to_pdf_simple(pptx_path: str, pdf_path: str):
         prs = Presentation(pptx_path)
         
         pdf_dir = os.path.dirname(pdf_path)
-        os.makedirs(pdf_dir, exist_ok=True)
+        if pdf_dir:  # Only create directory if it's not empty
+            os.makedirs(pdf_dir, exist_ok=True)
         
         c = canvas.Canvas(pdf_path, pagesize=A4)
         page_width, page_height = A4
@@ -467,52 +820,163 @@ def cleanup_old_files():
     except Exception as e:
         logger.error(f"Error during cleanup: {e}")
 
-def read_document_content(filepath: str) -> str:
+def extract_text_from_pdf(file_path: str) -> str:
+    """Extract text from PDF using pdfplumber for better accuracy."""
     try:
-        ext = os.path.splitext(filepath)[1].lower()
+        import pdfplumber
+        text = ""
+        with pdfplumber.open(file_path) as pdf:
+            total_pages = len(pdf.pages)
+            for page_num, page in enumerate(pdf.pages, 1):
+                page_text = page.extract_text()
+                if page_text:
+                    text += page_text + "\n"
         
-        if ext == '.txt':
-            with open(filepath, 'r', encoding='utf-8') as f:
-                return f.read()
-                
-        elif ext == '.docx':
+        final_text = text.strip()
+        if not final_text:
+            logger.warning(f"No extractable text found in PDF: {file_path}. This may be an image-based PDF.")
+            raise Exception("This PDF appears to contain only images without extractable text. Please try a PDF with text content or convert it to a text-based format.")
+        
+        return final_text
+    except ImportError:
+        logger.error("pdfplumber not installed for PDF support")
+        raise ImportError("pdfplumber not installed. Please install with: pip install pdfplumber")
+    except Exception as e:
+        logger.error(f"Error extracting text from PDF: {e}")
+        raise Exception(f"Error reading PDF file: {str(e)}")
+
+def extract_text_from_docx(file_path: str) -> str:
+    """Extract text from DOCX using python-docx."""
+    try:
+        from docx import Document
+        doc = Document(file_path)
+        text_parts = []
+        
+        # Extract text from paragraphs
+        for para in doc.paragraphs:
+            if para.text.strip():
+                text_parts.append(para.text.strip())
+        
+        # Extract text from tables
+        for table in doc.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    if cell.text.strip():
+                        text_parts.append(cell.text.strip())
+        
+        return "\n".join(text_parts)
+    except ImportError:
+        logger.error("python-docx not installed for DOCX support")
+        raise ImportError("python-docx not installed. Please install with: pip install python-docx")
+    except Exception as e:
+        logger.error(f"Error extracting text from DOCX: {e}")
+        raise Exception(f"Error reading DOCX file: {str(e)}")
+
+def extract_text_from_txt(file_path: str) -> str:
+    """Extract text from plain text file."""
+    try:
+        # Try multiple encodings
+        encodings = ['utf-8', 'utf-8-sig', 'latin-1', 'cp1252']
+        
+        for encoding in encodings:
             try:
-                from docx import Document as DocxDocument
-                doc = DocxDocument(filepath)
-                return "\n".join([para.text for para in doc.paragraphs])
-            except ImportError:
-                logger.error("python-docx not installed for .docx support")
-                return "Error: python-docx not installed for .docx support"
-            except Exception as e:
-                logger.error(f"Error reading .docx file: {e}")
-                return f"Error reading .docx file: {str(e)}"
-                
-        elif ext == '.pdf':
-            try:
-                import PyPDF2
-                with open(filepath, 'rb') as f:
-                    pdf_reader = PyPDF2.PdfReader(f)
-                    text = ""
-                    for page in pdf_reader.pages:
-                        text += page.extract_text() + "\n"
-                    return text
-            except ImportError:
-                logger.error("PyPDF2 not installed for PDF support")
-                return "Error: PyPDF2 not installed for PDF support"
-            except Exception as e:
-                logger.error(f"Error reading PDF file: {e}")
-                return f"Error reading PDF file: {str(e)}"
+                with open(file_path, "r", encoding=encoding) as f:
+                    return f.read().strip()
+            except UnicodeDecodeError:
+                continue
+        
+        # If all encodings fail, try with error handling
+        with open(file_path, "r", encoding='utf-8', errors='replace') as f:
+            return f.read().strip()
+            
+    except Exception as e:
+        logger.error(f"Error reading text file: {e}")
+        raise Exception(f"Error reading text file: {str(e)}")
+
+def detect_file_type(file_path: str) -> str:
+    """Detect file type using multiple methods."""
+    try:
+        # First try python-magic if available
+        try:
+            import magic
+            mime = magic.Magic(mime=True)
+            return mime.from_file(file_path)
+        except ImportError:
+            pass
+        except Exception as e:
+            logger.warning(f"python-magic detection failed: {e}")
+    
+        # Fallback to file extension
+        ext = os.path.splitext(file_path)[1].lower()
+        mime_map = {
+            '.pdf': 'application/pdf',
+            '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            '.doc': 'application/msword',
+            '.txt': 'text/plain'
+        }
+        
+        return mime_map.get(ext, 'application/octet-stream')
+        
+    except Exception as e:
+        logger.error(f"Error detecting file type: {e}")
+        # Final fallback to extension
+        ext = os.path.splitext(file_path)[1].lower()
+        if ext == '.pdf':
+            return 'application/pdf'
+        elif ext in ['.docx', '.doc']:
+            return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        elif ext == '.txt':
+            return 'text/plain'
         else:
-            return "Unsupported file format"
+            return 'application/octet-stream'
+
+def read_document_content(filepath: str) -> str:
+    """Enhanced document text extraction with automatic file type detection."""
+    try:
+        if not os.path.exists(filepath):
+            raise FileNotFoundError(f"File not found: {filepath}")
+        
+        # Detect file type
+        mime_type = detect_file_type(filepath)
+        logger.info(f"Detected file type: {mime_type} for file: {filepath}")
+        
+        # Extract text based on file type
+        if mime_type == "application/pdf":
+            return extract_text_from_pdf(filepath)
+        elif mime_type in [
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/msword"
+        ]:
+            return extract_text_from_docx(filepath)
+        elif mime_type == "text/plain":
+            return extract_text_from_txt(filepath)
+        else:
+            # Try to determine by file extension as fallback
+            ext = os.path.splitext(filepath)[1].lower()
+            if ext == '.pdf':
+                return extract_text_from_pdf(filepath)
+            elif ext in ['.docx', '.doc']:
+                return extract_text_from_docx(filepath)
+            elif ext == '.txt':
+                return extract_text_from_txt(filepath)
+            else:
+                raise ValueError(f"Unsupported file type: {mime_type}. Supported types: PDF, DOCX, TXT")
             
     except Exception as e:
         logger.error(f"Error reading document {filepath}: {e}")
-        return f"Error reading document: {str(e)}"
+        raise Exception(f"Error reading document: {str(e)}")
 
 def generate_presentation_content(config: Dict) -> str:
     try:
+        print(f"DEBUG: Config keys: {list(config.keys())}")
+        print(f"DEBUG: Has doc_content: {'doc_content' in config}")
+        if config.get('doc_content'):
+            print(f"DEBUG: Document content length: {len(config['doc_content'])}")
+        else:
+            print(f"DEBUG: Topic: '{config.get('topic', 'NONE')}'")
+        
         llm = ChatGoogleGenerativeAI(
-            model="gemini-1.5-pro",
+            model="gemini-2.0-flash-exp",
             temperature=0.0
         )
         
